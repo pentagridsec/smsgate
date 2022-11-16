@@ -1,0 +1,20 @@
+object Service "xmlrpc-smsgate-health" {
+  import "generic-service-internet"
+  host_name = "myhostname"
+  check_command = "smsgate"  
+  vars.smsgate_host = "myhostname"
+  vars.smsgate_port = "7000"
+  vars.smsgate_ca = "/etc/ssl/certs/myhostname.crt"
+  vars.smsgate_api_token = "secretsecret"
+}
+
+object Service "xmlrpc-smsgate-cert" {
+  import "generic-service-internet"
+  host_name = "myhostname"
+  check_command = "http"  
+  vars.http_ssl = "true"
+  vars.http_vhost = "localhost"
+  vars.http_port = "7000"
+  vars.http_certificate = "25,5"
+  check_interval = 1440m
+}

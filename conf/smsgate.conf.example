@@ -1,0 +1,40 @@
+[mail]
+#enabled = True
+server = mymailserver.example.org
+port = 465
+user = myaccount@example.org
+password = secretpass
+recipient = mailbox@example.org
+health_check_interval = 600
+
+[server]
+host = localhost
+port = 7000
+certificate = cert.pem
+key = key.pem
+
+[api]
+token_send_sms =   $2b$10$Vr3t8gYlc9.OFQspGP7Ez.fR9TLXnBVdZKZKgg77Vuspg16MOel4G
+token_send_ussd =  $2b$10$Vr3t8gYlc9.OFQspGP7Ez.fR9TLXnBVdZKZKgg77Vuspg16MOel4G
+token_get_health_state = $2b$10$yPqkNIyAZuzxLebb/oROiuoFxv2h9AlORWnMO312G8N9.oem0Xnpi
+token_get_stats =  $2b$10$yPqkNIyAZuzxLebb/oROiuoFxv2h9AlORWnMO312G8N9.oem0Xnpi
+token_00_get_sms = $2b$10$MIeCuGE9mZ0DiLv0RHZbweFtMHgEf/Wr20aNniYTvvullbGs9Rc7e
+token_01_get_sms = $2b$10$MIeCuGE9mZ0DiLv0RHZbweFtMHgEf/Wr20aNniYTvvullbGs9Rc7e
+token_02_get_sms = $2b$10$MIeCuGE9mZ0DiLv0RHZbweFtMHgEf/Wr20aNniYTvvullbGs9Rc7e
+
+[modempool]
+# Perform an internal health check after this time interval in seconds.
+# The health check includes an account balance check. If the interval is
+# to tight, the balance check may fail.
+health_check_interval = 3600
+
+# At a regular interval, each enabled modem sends an SMS to "itself".
+# This is part of the health check and generates a financial event
+# that may convince the operator to not shut down the subscription.
+# Possible values are: monthly, weekly, daily
+sms_self_test_interval = monthly
+
+[logging]
+# Log level: debug, info, warning, error, critical
+# Warning: Enabling DEBUG causes the SIM card pin and SMS to be logged.
+level = DEBUG

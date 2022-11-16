@@ -1,0 +1,18 @@
+[00]
+
+enabled = True
+port=/dev/ttyUSB1
+phone_number = +491762xxxxxxx
+provider = Myprovider
+pin = 2342
+ussd_account_balance = *101#
+ussd_account_balance_regexp = Ihr Guthaben beträgt: ([\d+\,]+)
+currency = EUR
+account_balance_warning = 10.00
+account_balance_critical = 5.00
+prefixes = +49176 +49
+costs_per_sms = 0.09
+health_check_interval = 600
+imei = 35972xxxxxxxxxx
+encoding = UCS2
+#email_address = foo@example.com

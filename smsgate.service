@@ -1,0 +1,14 @@
+[Unit]
+Description=The SMS Gateway service.
+After=syslog.target
+
+[Service]
+Type=simple
+User=smsgate
+Group=smsgate
+ExecStart=/opt/smsgate/server/smsgate.sh
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target

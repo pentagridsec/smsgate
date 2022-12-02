@@ -309,7 +309,10 @@ def setup_seccomp(log_only: bool = False) -> None:
             "dup",
             "epoll_create1",
             "epoll_ctl",
+            "epoll_wait",
+            "exit",
             "fcntl",
+            "flock",
             "fstat",
             "futex",
             "getcwd",
@@ -321,6 +324,7 @@ def setup_seccomp(log_only: bool = False) -> None:
             "ioctl",
             "lseek",
             "lstat",
+            "madvise",
             "mmap",
             "mprotect",
             "munmap",
@@ -334,13 +338,17 @@ def setup_seccomp(log_only: bool = False) -> None:
             "rt_sigaction",
             "rt_sigprocmask",
             "seccomp",
+            "select",
+            "setsockopt",
             "set_robust_list",
             "set_tid_address",
             "sigaltstack",
+            "socket",
             "stat",
             "sysinfo",
             "uname",
-            "wait4"
+            "wait4",
+            "write"
         ]
 
         for sc in allowed_syscalls:

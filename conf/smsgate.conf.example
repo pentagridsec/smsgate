@@ -40,5 +40,5 @@ sms_self_test_interval = monthly
 level = DEBUG
 
 [seccomp]
-# Should SECCOMP be enabled?
+# Experimental SECCOMP support. Enabling this may require startup debugging.
 enabled = True

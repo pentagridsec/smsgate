@@ -17,4 +17,4 @@ service-identity==21.1.0
 six==1.16.0
 Twisted==22.10.0
 typing-extensions==4.4.0
-pyseccomp
+pyseccomp==0.1.2

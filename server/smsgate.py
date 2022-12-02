@@ -285,6 +285,75 @@ class SmsGate:
                 self.pool.do_health_check()
 
 
+def setup_seccomp(log_only: bool = False) -> None:
+    """
+    Enable SECCOMP filtering.
+    @param log_only: A boolean flag indicating that violations are only logged.
+    """
+    l = logging.getLogger("SECCOMP")
+    try:
+        import pyseccomp as seccomp
+        import errno
+
+        action_deny = seccomp.ERRNO(errno.EACCES)
+
+        f = seccomp.SyscallFilter(seccomp.LOG if log_only else action_deny)
+        f.set_attr(seccomp.Attr.CTL_LOG, 1)
+
+        allowed_syscalls = [
+            "access",
+            "arch_prctl",
+            "brk",
+            "clone",
+            "close",
+            "dup",
+            "epoll_create1",
+            "epoll_ctl",
+            "fcntl",
+            "fstat",
+            "futex",
+            "getcwd",
+            "getdents",
+            "getdents64",
+            "getpid",
+            "getrandom",
+            "gettid",
+            "ioctl",
+            "lseek",
+            "lstat",
+            "mmap",
+            "mprotect",
+            "munmap",
+            "openat",
+            "pipe2",
+            "prctl",
+            "pread64",
+            "prlimit64",
+            "read",
+            "readlink",
+            "rt_sigaction",
+            "rt_sigprocmask",
+            "seccomp",
+            "set_robust_list",
+            "set_tid_address",
+            "sigaltstack",
+            "stat",
+            "sysinfo",
+            "uname",
+            "wait4"
+        ]
+
+        for sc in allowed_syscalls:
+            l.debug(f"Allow syscall {sc}.")
+            f.add_rule(seccomp.ALLOW, sc)
+
+        f.load()
+
+        l.info(f"Enabled SECCOMP (log_only: {log_only}).")
+
+    except ImportError:
+        l.warning("Failed to use SECCOMP.")
+
 def main() -> None:
     """
     The main function that launches the SMS Gateway server. It will not return.
@@ -304,6 +373,10 @@ def main() -> None:
         logging.Formatter("%(asctime)s %(levelname)s %(name)s - %(message)s")
     )
     root.addHandler(cons_handler)
+
+    # apply seccomp
+    if server_config.getboolean("seccomp", "enabled", fallback=True):
+        setup_seccomp()
 
     # check config file permissions
     helper.check_file_permissions("conf/sim-cards.conf")

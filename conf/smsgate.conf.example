@@ -38,3 +38,7 @@ sms_self_test_interval = monthly
 # Log level: debug, info, warning, error, critical
 # Warning: Enabling DEBUG causes the SIM card pin and SMS to be logged.
 level = DEBUG
+
+[seccomp]
+# Should SECCOMP be enabled?
+enabled = True

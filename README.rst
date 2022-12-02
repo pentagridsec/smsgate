@@ -13,6 +13,9 @@ is receiving SMS and to forward the SMS or to allow XML-RPC clients to
 fetch SMS via an API. The second use case is to send SMS alarms for
 service monitoring purposes.
 
+`Our blog post on the occasion of releasing the source code
+<https://www.pentagrid.ch/en/blog/open-source-sms-gateway-for-pentest-projects>`_ gives
+more background regarding this project.
 
 Features
 --------
@@ -25,7 +28,8 @@ The SMS gateway implements a few features which are:
 - Support for API token to control API access
 - Support for Icinga/Nagios monitoring
 - Support for Munin monitoring
-- An XML-RPC API client to
+- An XML-RPC API client to interact with the service
+- Experimental SECCOMP support (may break things)
 
 The SMS gateway  misses these features:
 
@@ -130,7 +134,7 @@ Install SMS gateway
 * Checkout code:
 ::
 
-    git clone https://gitub.com/pentagridsec/smsgate
+    git clone https://github.com/pentagridsec/smsgate
 
 * Move code to installation directory:
 ::
@@ -141,7 +145,7 @@ Install SMS gateway
 * Fix permissions
 ::
 
-    chown -R root.smsgate /opt/smsate
+    chown -R root.smsgate /opt/smsgate
     chmod 640 /opt/smsgate/*.conf
     chmod 644 /opt/smsgate/cert.pem
 
@@ -395,6 +399,18 @@ intervals via the ``sms_self_test_interval`` setting.
 Furthermore, it is possible to define a log level via setting ``level`` on
 which the SMS Gateway produces logs.
 
+Last but not least, there is _experimental_ support for SECCOMP to restrict,
+which system-calls are allowed to run. For non-allowed syscalls, the
+kernel denies the operation. SECCOMP is disabled by default here, but it is possible to
+enable this.
+
+::
+
+    [seccomp]
+    # Experimental SECCOMP support. Enabling this may require startup debugging.
+    enabled = False
+
+
 Monitoring
 ===========
 
@@ -402,15 +418,18 @@ Icinga
 -------
 
 * Install plugin:
-  
+
 ::
 
     cd /etc/icinga2/conf.d/
     ln -s /opt/smsgate/icinga/check_smsgate.py .
     ln -s /opt/smsgate/icinga/service-smsgate.conf .
 
+* Ensure that Icinga is able to read the configuration files. Otherwise, the check will be silently
+  ignored (but maybe logged somewhere).
+
 * Restart icinga:
-  
+
 ::
 
     systemctl restart icinga2
@@ -420,7 +439,7 @@ Munin
 ----------
 
 * To install ths Munin plugin, go to the Munin nodes plugin directory and add a link.
-  
+
 ::
 
     cd /etc/munin/plugins
@@ -447,6 +466,4 @@ Copyright and Licence
 ``SMSgate`` is developed by Martin Schobert <martin@pentagrid.ch> and
 published under a BSD licence with a non-military clause. Please read
 ``LICENSE.txt`` for further details.
-
-
 

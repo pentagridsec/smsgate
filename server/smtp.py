@@ -225,7 +225,7 @@ class SMTPDelivery:
             self.health_state = "CRITICAL"
             self.health_logs = "Failed to send E-mail: " + str(e)
             self.l.warning(
-                f"[{sms.get_id()}] Unknwon exception occured during SMTP delivery: "
+                f"[{sms.get_id()}] Unknown exception occured during SMTP delivery: "
                 + str(e)
             )
             self.server = None
@@ -235,7 +235,7 @@ class SMTPDelivery:
             self.health_state = "CRITICAL"
             self.health_logs = "Failed to send E-mail"
             self.l.warning(
-                f"[{sms.get_id()}] Unknwon exception occured during SMTP delivery."
+                f"[{sms.get_id()}] Unknown exception occured during SMTP delivery."
             )
             self.server = None
             return False

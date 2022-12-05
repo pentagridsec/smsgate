@@ -35,7 +35,6 @@
 #  reviewed by *international* volunteers, this clause shall not be refused
 #  due to the matter of *national* security concerns.
 # -----------------------------------------------------------------------------
-import itertools
 from typing import Optional, Union, List, Tuple, Dict
 
 from twisted.web import xmlrpc, server
@@ -234,7 +233,7 @@ class RPCServer(xmlrpc.XMLRPC):
             slogs = slevel + ": " + slogs
 
         highest_level = helper.get_highest_warning_level([plevel, slevel, self.rlevel])
-        combined_list = "; ".join(itertools.chain.from_iterable(filter(None, [plogs, slogs, self.rlogs])))
+        combined_list = "; ".join(filter(None, [plogs, slogs, self.rlogs]))
 
         return highest_level, combined_list
 

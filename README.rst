@@ -22,7 +22,7 @@ Features
 
 The SMS gateway implements a few features which are:
 
-- Support for a GSM modem pool attached via USB
+- Support for a GSM modem pool attached via USB (or serial interfaces)
 - Receive SMS and forward it via SMTP to a e-mail recipient
 - XML-RPC API to fetch received SMS, to send SMS, to check the SMS delivery status, and to send USSD codes
 - Support for API token to control API access
@@ -42,7 +42,7 @@ Supported hardware
 The Python module ``python-gsmmodem-new`` does not have a list of supported
 devices, but this software should be usable with most modems. It has been tested with
 
-* ZTE MF 190 (Sufstick)
+* ZTE MF 190 (Surfstick)
 * Quectel M35 modules (modem pool)
 * SIM7600E modules (modem pool)
   
@@ -290,8 +290,11 @@ value to ``False``.
     key = key.pem
 
 The next section defines the XMLRPC server interface that runs on ``host:port``. The server
-supports TLS version >= 1.2. ``certificate`` and ``key`` refer to an X.509 certificate. If you
-do not have an own certificate authority, generating and using a self-signed certificate is okay,
+supports TLS version >= 1.2. ``certificate`` and ``key`` refer to an X.509 certificate. When you
+want to operate the gateway in the local network, binding the server to ``0.0.0.0`` is recommended.
+otherwise it won't be accessible.
+
+If you do not have an own certificate authority, generating and using a self-signed certificate is okay,
 when you bind the client to also use this self-signed certificate as trust anchor. You can create a
 private key and certificate by running:
 
@@ -299,7 +302,9 @@ private key and certificate by running:
 
     ./tools/make_cert.sh
 
-
+This script creates a certificate with the CN set to ``localhost``. You may want to adjust this. Otherwise
+clients trusting the self-signed certificate may fail at the hostname verification.
+    
 If you do not use a self-signed certificate, but a certificate deployed to your server, the path
 can be entered there, for example:
 

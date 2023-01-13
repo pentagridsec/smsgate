@@ -163,12 +163,12 @@ class SMTPDelivery:
 
                 except Exception as e:
                     self.health_state = "CRITICAL"
-                    self.health_logs = "An exception occured: " + str(e)
+                    self.health_logs = "An exception occurred: " + str(e)
                     self.server = None
 
                 except:
                     self.health_state = "CRITICAL"
-                    self.health_logs = "An exception occured."
+                    self.health_logs = "An exception occurred."
                     self.server = None
 
         return self.health_state, self.health_logs
@@ -184,58 +184,65 @@ class SMTPDelivery:
         self.l.info(
             f"[{sms.get_id()}] Sending SMS as E-mail to recipient {receiver_email}."
         )
-        try:
-            msg = MIMEText(sms.to_string())
 
-            msg["Subject"] = f"SMS from {sms.get_sender()} to {sms.get_recipient()}"
-            msg["From"] = self.user
-            msg["To"] = receiver_email
+        for i in range(1, 3):
 
-            if self.server is None:
-                self._create_connection()
-
-            self.l.info(
-                f"[{sms.get_id()}] Try to send E-mail from {self.user} to {receiver_email}."
-            )
+            if i > 0:
+                self.l.debug(f"[{sms.get_id()}] Try sending e-mail, again.")
 
             try:
-                self.server.sendmail(self.user, receiver_email, msg.as_string())
-            except UnicodeError as e:
-                # if encoding is broken, try ascii
+                msg = MIMEText(sms.to_string())
+
+                msg["Subject"] = f"SMS from {sms.get_sender()} to {sms.get_recipient()}"
+                msg["From"] = self.user
+                msg["To"] = receiver_email
+
+                if self.server is None:
+                    self._create_connection()
+
                 self.l.info(
-                    f"[{sms.get_id()}] Try to send text as ASCII instead of UTF-8."
+                    f"[{sms.get_id()}] Going to send E-mail from {self.user} to {receiver_email}."
                 )
-                self.server.sendmail(self.user, receiver_email, repr(msg.as_string()))
 
-            self.l.info(f"[{sms.get_id()}] Sending E-mail was successful.")
+                assert(self.server is not None)
 
-            # A successful delivery clears the error state
-            self.health_state = "OK"
-            self.health_logs = None
-            return True
+                try:
+                    self.server.sendmail(self.user, receiver_email, msg.as_string())
+                except UnicodeError as e:
+                    # if encoding is broken, try ascii
+                    self.l.info(
+                        f"[{sms.get_id()}] Try to send text as ASCII instead of UTF-8."
+                    )
+                    self.server.sendmail(self.user, receiver_email, repr(msg.as_string()))
 
-        except smtplib.SMTPException as e:
-            self.health_state = "CRITICAL"
-            self.health_logs = "Failed to send E-mail: " + str(e)
-            self.l.info(f"[{sms.get_id()}] Failed to send E-mail: " + str(e))
-            self.server = None
-            return False
+                self.l.info(f"[{sms.get_id()}] Sending E-mail was successful.")
 
-        except Exception as e:
-            self.health_state = "CRITICAL"
-            self.health_logs = "Failed to send E-mail: " + str(e)
-            self.l.warning(
-                f"[{sms.get_id()}] Unknown exception occured during SMTP delivery: "
-                + str(e)
-            )
-            self.server = None
-            return False
+                # A successful delivery clears the error state
+                self.health_state = "OK"
+                self.health_logs = None
+                return True
 
-        except:
-            self.health_state = "CRITICAL"
-            self.health_logs = "Failed to send E-mail"
-            self.l.warning(
-                f"[{sms.get_id()}] Unknown exception occured during SMTP delivery."
-            )
-            self.server = None
-            return False
+            except smtplib.SMTPException as e:
+                self.health_state = "CRITICAL"
+                self.health_logs = "Failed to send E-mail: " + str(e)
+                self.l.info(f"[{sms.get_id()}] Failed to send E-mail: " + str(e))
+                self.server = None
+
+            except Exception as e:
+                self.health_state = "CRITICAL"
+                self.health_logs = "Failed to send E-mail: " + str(e)
+                self.l.warning(
+                    f"[{sms.get_id()}] Unknown exception occurred during SMTP delivery: "
+                    + str(e)
+                )
+                self.server = None
+
+            except:
+                self.health_state = "CRITICAL"
+                self.health_logs = "Failed to send E-mail"
+                self.l.warning(
+                    f"[{sms.get_id()}] Unknown exception occurred during SMTP delivery."
+                )
+                self.server = None
+
+

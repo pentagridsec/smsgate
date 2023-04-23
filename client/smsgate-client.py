@@ -112,7 +112,7 @@ def shell(host, port, ca_file, api_token):
 
         command = input("+ Command (ussd, sms, status, exit): ")
 
-        if command == 'status':
+        if command == 'status' or command == '':
             get_stats(host, port, ca_file, api_token)
         elif command == 'ussd':
             phone_number = input_phone_number(phone_number)

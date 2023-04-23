@@ -41,6 +41,7 @@
 
 import configparser
 import logging
+import os
 import queue
 import sys
 import threading
@@ -214,7 +215,7 @@ class SmsGate:
                 self.l.info(f"[{identifier}] Initializing modem {identifier}.")
                 for i in range(0, 3):
                     try:
-                        gsmmodem = modem.Modem(identifier, modem_conf)
+                        gsmmodem = modem.Modem(identifier, modem_conf, self.config.get("modempool", "serial_ports_hint_file"))
                         if gsmmodem:
                             gsmmodem.set_event_thread(
                                 self.event_available
@@ -380,7 +381,11 @@ def main() -> None:
     The main function that launches the SMS Gateway server. It will not return.
     """
 
+    # read config
     server_config = SmsGate.read_config()
+
+    # set umask
+    os.umask(0o007)
 
     log_level = logging.getLevelName(server_config.get("logging", "level", fallback="INFO").upper())
 

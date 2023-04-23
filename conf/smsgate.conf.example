@@ -34,6 +34,11 @@ health_check_interval = 3600
 # Possible values are: monthly, weekly, daily
 sms_self_test_interval = monthly
 
+# A file that stores previously found associations between serial ports
+# and IMEIs. These associations are used as hints on server (re)start to
+# speed-up the process. The file must be writable by the server user.
+serial_ports_hint_file = /var/cache/smsgate/serial_ports.hints
+
 [logging]
 # Log level: debug, info, warning, error, critical
 # Warning: Enabling DEBUG causes the SIM card pin and SMS to be logged.

@@ -142,12 +142,17 @@ Install SMS gateway
     sudo mv smsgate /opt
     cd /opt/smsgate
 
+* Create a directory to store runtime data
+::
+    mkdir /var/smsgate
+
 * Fix permissions
 ::
 
-    chown -R root.smsgate /opt/smsgate
+    chown -R root.smsgate /opt/smsgate /var/cache/smsgate
     chmod 640 /opt/smsgate/*.conf
     chmod 644 /opt/smsgate/cert.pem
+    chmod 770 /var/cache/smsgate
 
 * Install service:
 ::
@@ -390,9 +395,16 @@ They likely won't with a standard ``umask`` value.
     # Possible values are: monthly, weekly, daily
     sms_self_test_interval = monthly
 
+    # A file that stores previously found associations between serial ports
+    # and IMEIs. These associations are used as hints on server (re)start to
+    # speed-up the process. The file must be writable by the server user.
+    serial_ports_hint_file = /var/cache/smsgate/serial_ports.hints
+
 The ``modempool`` section contains settings to control the interval for
 health checks. In addition, it is possible to trigger SMS sending at regular
-intervals via the ``sms_self_test_interval`` setting.
+intervals via the ``sms_self_test_interval`` setting. The ``serial_ports_hint_file``
+setting controls where the service stores associations between IMEIs and
+serial ports.
 
 ::
 

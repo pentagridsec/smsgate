@@ -59,60 +59,19 @@ from gsmmodem.exceptions import (
 )
 from gsmmodem.modem import GsmModem, SerialComms, SentSms, ReceivedSms
 
-import sms
 import modemconfig
-
-class SerialPortMapper:
-    """
-    Helper class to remember IMEI to serial port mappings.
-    """
-
-    class __SerialPortMapper:
-
-        imei_to_port = {}
-
-        def __init__(self):
-            self.l = logging.getLogger(f"SerialPortMapper")
-
-        def set_mapping(self, imei: str, device_name: str) -> None:
-            self.imei_to_port[imei] = device_name
-            self.l.debug(f"Add mapping from IMEI {imei} to serial port {device_name}.")
-
-        def get_mapping(self, imei: str) -> Optional[str]:
-            self.l.debug(f"Try to find mapping for IMEI {imei}.")
-            self._dump()
-            if imei in self.imei_to_port:
-                port = self.imei_to_port[imei]
-                self.l.debug(
-                    f"Mapping from IMEI {imei} to serial port {port} exists in cache."
-                )
-                return port
-            else:
-                self.l.debug(f"No mapping for IMEI {imei} in cache.")
-                return None
-
-        def _dump(self) -> None:
-            for imei in self.imei_to_port:
-                port = self.imei_to_port[imei]
-                self.l.debug(f"IMEI {imei} -> serial port {port}")
-
-    # instance variable
-    instance = None
-
-    def __init__(self) -> None:
-        if not SerialPortMapper.instance:
-            SerialPortMapper.instance = SerialPortMapper.__SerialPortMapper()
-
-    def __getattr__(self, name):
-        return getattr(self.instance, name)
+import sms
+import serialportmapper
 
 
 class Modem(threading.Thread):
-    def __init__(self, identifier: str, config: modemconfig.ModemConfig) -> None:
+    def __init__(self, identifier: str, modem_config: modemconfig.ModemConfig, serial_ports_hint_file: str) -> None:
         assert identifier is not None
         self.event_available = None
         self.identifier = identifier
-        self.config = config
+        self.modem_config = modem_config
+        self.serial_ports_hint_file = serial_ports_hint_file
+
         self.balance = None
         self.sms_receiver_queue = queue.Queue()
         self.sms_sender_queue = queue.Queue()
@@ -151,7 +110,7 @@ class Modem(threading.Thread):
         is responsible for. If you have multiple SIM cards, it allows you to do routing decisions.
         @return: Returns a list of phone number prefixes for a modem.
         """
-        return self.config.prefixes
+        return self.modem_config.prefixes
 
     def get_costs(self) -> float:
         """
@@ -160,7 +119,7 @@ class Modem(threading.Thread):
         usually refers to the currency that is mentioned in the ModemConfig.
         @return: Returns the costs per SMS.
         """
-        return self.config.costs_per_sms
+        return self.modem_config.costs_per_sms
 
     def get_phone_number(self) -> str:
         """
@@ -168,7 +127,7 @@ class Modem(threading.Thread):
         Per convention phone numbers are entered everywhere in E.123 international notation.
         @return: Returns the phone number as string.
         """
-        return self.config.phone_number
+        return self.modem_config.phone_number
 
     def set_event_thread(self, event_available: threading.Event) -> None:
         """
@@ -190,7 +149,7 @@ class Modem(threading.Thread):
         Returns the modem's SIM card account balance currency.
         @return: A string indicating the currency, for example "EUR" or "CHF".
         """
-        return self.config.ussd_currency
+        return self.modem_config.ussd_currency
 
     def get_current_network(self) -> Optional[str]:
         """
@@ -212,7 +171,7 @@ class Modem(threading.Thread):
         Get the modem configuration
         @return: Returns the config as ModemConfiguration object.
         """
-        return self.config
+        return self.modem_config
 
     def get_current_signal_dB(self) -> int:
         """
@@ -314,7 +273,7 @@ class Modem(threading.Thread):
 
         new_sms = sms.SMS(
             sms_id=None,
-            recipient=self.config.phone_number,
+            recipient=self.modem_config.phone_number,
             text=_sms.text,
             sender=_sms.number,
             timestamp=_sms.time,
@@ -354,17 +313,17 @@ class Modem(threading.Thread):
             Message is a human-readable string giving details about the issue. Message may be a None.
         """
         assert (
-                self.config.account_balance_critical <= self.config.account_balance_warning
+                self.modem_config.account_balance_critical <= self.modem_config.account_balance_warning
         )
 
-        if self.balance < self.config.account_balance_critical:
-            s = f"Modem[{self.identifier}]: Critical: Account balance of {self.balance} {self.config.ussd_currency} " \
+        if self.balance < self.modem_config.account_balance_critical:
+            s = f"Modem[{self.identifier}]: Critical: Account balance of {self.balance} {self.modem_config.ussd_currency} " \
                 "is lower than threshold of {self.config.account_balance_critical} {self.config.ussd_currency}."
             self.l.warning(s)
             return "CRITICAL", s
 
-        elif self.balance < self.config.account_balance_warning:
-            s = f"Modem[{self.identifier}]: Warning: Account balance of {self.balance} {self.config.ussd_currency} " \
+        elif self.balance < self.modem_config.account_balance_warning:
+            s = f"Modem[{self.identifier}]: Warning: Account balance of {self.balance} {self.modem_config.ussd_currency} " \
                 "is lower than threshold of {self.config.account_balance_warning} {self.config.ussd_currency}."
             self.l.warning(s)
             return "WARNING", s
@@ -427,7 +386,7 @@ class Modem(threading.Thread):
             or do_now
             or (self.health_state != "OK")
             or ((datetime.datetime.now() - self.last_health_check).total_seconds()
-                    >= self.config.health_check_interval)):
+                    >= self.modem_config.health_check_interval)):
             self.health_state, self.health_logs = self._really_do_health_check()
 
     def _repeat_initialization(self) -> None:
@@ -473,10 +432,11 @@ class Modem(threading.Thread):
         time.sleep(random.randint(0, 15))
 
         # Case 2: Port is known
-        spm = SerialPortMapper()
-        last_device_name = spm.get_mapping(expected_imei)
-        if last_device_name:
-            return last_device_name
+        spm = serialportmapper.SerialPortMapper(self.serial_ports_hint_file)
+        port = spm.get_mapping(expected_imei)
+        if port:
+            if not self._port_was_renumbered(port):
+                return port
 
         # Case 3: Find port
         device_list = glob.glob(device_name)
@@ -486,7 +446,7 @@ class Modem(threading.Thread):
             self.l.info(f"Try to find correct port. Will open {f}.")
             self.status = f"Try port {f}."
 
-            if self._check_imei(f, self.config.baud, expected_imei):
+            if self._check_imei(f, self.modem_config.baud, expected_imei):
                 self.status = f"Port {f} found."
                 return f
 
@@ -529,7 +489,7 @@ class Modem(threading.Thread):
                     self.l.info(f"Read IMEI of modem    : {found_imei}")
 
                     if expected_imei is not None:
-                        spm = SerialPortMapper()
+                        spm = serialportmapper.SerialPortMapper(self.serial_ports_hint_file)
                         if expected_imei == found_imei:
                             spm.set_mapping(found_imei, port)
                             self.l.info(f"Modem found on serial port {port}.")
@@ -558,20 +518,31 @@ class Modem(threading.Thread):
             modem.close()
         return False
 
-    def _check_renumbering(self) -> None:
+    def _port_was_renumbered(self, use_port: str = None) -> bool:
         """
         Check if serial devices were renumbered.
+        @return: Returns False if the known serial port still matches the expected IMEI and True else.
         """
-        if self.current_port:
+
+        if use_port is not None:
+            p = use_port
+        else:
+            p = self.current_port
+
+        if p:
             # We have a port, which means it is not the first run. However, when there is
             # a re-initialisation after a modem power-loss, we just check the IMEI again,
             # because devices might be renumbered.
             self.status = "Check port renumbering."
-            imei_status = self._check_imei(self.current_port, self.config.baud, self.config.imei)
-            if not imei_status:
+            imei_status = self._check_imei(p, self.modem_config.baud, self.modem_config.imei)
+            if imei_status:
+                return False
+            else:
                 # There was a renumbering of ports, better we search again
                 self.status = "Port was renumbered. Reinitializing."
                 self.current_port = None
+
+        return True
 
     def _init_modem(self) -> bool:
         """
@@ -588,16 +559,16 @@ class Modem(threading.Thread):
         self.l.info(f"Initializing modem {self.identifier}.")
         try:
 
-            self._check_renumbering()
+            self._port_was_renumbered()
 
             if self.current_port is None:
                 self.status = "Try finding port."
-                self.current_port = self._find_port(self.config.port, self.config.imei)
+                self.current_port = self._find_port(self.modem_config.port, self.modem_config.imei)
 
             if self.current_port is None:
                 self.status = "Failed finding port."
                 self.l.error(
-                    f"Problem: Can't find a port {self.config.port} that matches IMEI {self.config.imei}."
+                    f"Problem: Can't find a port {self.modem_config.port} that matches IMEI {self.modem_config.imei}."
                 )
                 return False
 
@@ -605,7 +576,7 @@ class Modem(threading.Thread):
             time.sleep(10)
             self.modem = GsmModem(
                 self.current_port,
-                self.config.baud,
+                self.modem_config.baud,
                 smsReceivedCallbackFunc=self._handle_sms,
                 exclusive=True,
             )  # was True
@@ -623,10 +594,10 @@ class Modem(threading.Thread):
         self.status = "Connecting to modem."
 
         try:
-            assert self.config.pin is None or int(self.config.pin) >= 0
+            assert self.modem_config.pin is None or int(self.modem_config.pin) >= 0
             self.modem.connect(
-                self.config.pin,
-                waitingForModemToStartInSeconds=self.config.wait_for_start,
+                self.modem_config.pin,
+                waitingForModemToStartInSeconds=self.modem_config.wait_for_start,
             )
 
         except PinRequiredError:
@@ -738,10 +709,10 @@ class Modem(threading.Thread):
         self.status = "Send USSD."
         try:
 
-            if self.config.encoding == "UCS2" or self.config.encoding is None:
+            if self.modem_config.encoding == "UCS2" or self.modem_config.encoding is None:
                 return self._send_ussd_ucs2(code)
             else:
-                return self._send_ussd_enc(code, self.config.encoding)
+                return self._send_ussd_enc(code, self.modem_config.encoding)
 
         except TimeoutException:
             self.l.error(
@@ -762,24 +733,24 @@ class Modem(threading.Thread):
         @return: Returns the balance as float. None is returned on error or if the balance information is not available.
         """
 
-        if not self.config.ussd_account_balance:
+        if not self.modem_config.ussd_account_balance:
             return None
 
         try:
 
-            response = self.send_ussd(self.config.ussd_account_balance)
+            response = self.send_ussd(self.modem_config.ussd_account_balance)
             if response is None:
                 self.l.debug(f"USSD response is None. Stop processing.")
                 return None
 
-            self.l.debug(f"Applying regexp [{self.config.ussd_account_balance_regexp}]")
+            self.l.debug(f"Applying regexp [{self.modem_config.ussd_account_balance_regexp}]")
 
-            if self.config.ussd_account_balance_regexp is None:
+            if self.modem_config.ussd_account_balance_regexp is None:
                 self.l.warning("Regexp for extracting the balance from the USSD response is not set. Do not process "
                                "USSD response any further.")
                 return None
 
-            result = re.match(self.config.ussd_account_balance_regexp, response)
+            result = re.match(self.modem_config.ussd_account_balance_regexp, response)
             if result:
                 balance = result.group(1)
                 self.l.debug(f"Balance as string: {balance} {self.get_currency()}")
@@ -789,7 +760,7 @@ class Modem(threading.Thread):
 
                 return self.balance
             else:
-                self.l.error(f"Error: Regular expression [{self.config.ussd_account_balance_regexp}] "
+                self.l.error(f"Error: Regular expression [{self.modem_config.ussd_account_balance_regexp}] "
                              "failed for string [{response}]")
         except TimeoutException:
             self.l.error("Error: Failed to send USSD message.")
@@ -854,7 +825,7 @@ class Modem(threading.Thread):
         self.last_health_check = datetime.datetime.now()
 
         if self.modem is None:
-            if self.config.enabled:
+            if self.modem_config.enabled:
                 return "CRITICAL", f"{self.identifier} No modem object."
             else:
                 return "WARNING", f"{self.identifier} No modem object."
@@ -884,7 +855,7 @@ class Modem(threading.Thread):
         # Account balance checks fail frequently, therefore this check only results in warnings
         # with valid balances.
 
-        if self.config.ussd_account_balance and self.config.ussd_account_balance_regexp:
+        if self.modem_config.ussd_account_balance and self.modem_config.ussd_account_balance_regexp:
 
             #    if self.check_balance() is None:
             #        return "WARNING", f"{self.identifier} Failed to check balance."
@@ -899,11 +870,11 @@ class Modem(threading.Thread):
         now = datetime.datetime.now()
         day_matches = False
 
-        if self.config.sms_self_test_interval == "monthly":
+        if self.modem_config.sms_self_test_interval == "monthly":
             if now.day == 1:
                 day_matches = True
 
-        elif self.config.sms_self_test_interval == "weekly":
+        elif self.modem_config.sms_self_test_interval == "weekly":
             if now.weekday == 1:
                 day_matches = True
         else:
@@ -916,7 +887,7 @@ class Modem(threading.Thread):
                     now - now.replace(hour=0, minute=0, second=0, microsecond=0)
             ).total_seconds()
 
-            if seconds_since_midnight < self.config.health_check_interval:
+            if seconds_since_midnight < self.modem_config.health_check_interval:
                 # Have checked balance thresholds before, not necessarily the online-balance,
                 # but the last balance value we have seen and stored.
                 self.l.info("Send test SMS to ourself.")
@@ -924,7 +895,7 @@ class Modem(threading.Thread):
 
             elif (
                     self.health_check_expected_token
-                    and seconds_since_midnight < 2 * self.config.health_check_interval
+                    and seconds_since_midnight < 2 * self.modem_config.health_check_interval
             ):
                 # The expected token was not cleared, which means the expected SMS was not received.
                 # Therefore, we send another SMS
@@ -952,9 +923,9 @@ class Modem(threading.Thread):
         return self.send_sms(
             sms.SMS(
                 sms_id=new_uuid,
-                recipient=self.config.phone_number,
+                recipient=self.modem_config.phone_number,
                 text=self.health_check_expected_token,
-                sender=self.config.phone_number,
+                sender=self.modem_config.phone_number,
             )
         )
 

@@ -297,7 +297,7 @@ class RPCServer(xmlrpc.XMLRPC):
             )
             raise xmlrpc.Fault(401, "Invalid API token.")
 
-        return self.pool.get_stats()
+        return "OK", self.pool.get_stats()
 
 
 class MySSLContext(SSL.Context):

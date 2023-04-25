@@ -77,7 +77,9 @@ def get_stats(host, port, ca_file, api_token):
     
     s = create_client(host, port, ca_file)
     print("+ Get status ...")
-    stats = s.get_stats(api_token)
+    result = s.get_stats(api_token)
+    status = result[0]
+    stats = result[1]
 
     print(f"{'#':4} {'Port':15} {'Phone number':15} {'dB':>4} {'Network':25} {'Balance':9} {'Snt':3} {'Rcv':3} {'#Init':5} {'Last init':16} {'Health':10} {'Health state message':25} {'Status':25}")
 

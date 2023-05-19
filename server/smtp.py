@@ -193,7 +193,7 @@ class SMTPDelivery:
             try:
                 msg = MIMEText(sms.to_string())
 
-                msg["Subject"] = f"SMS from {sms.get_sender()} to {sms.get_recipient()}"
+                msg["Subject"] = f"SMS from {sms.get_sender()} to {sms.get_recipient()} via modem [{sms.get_receiving_modem().get_identifier()}]"
                 msg["From"] = self.user
                 msg["To"] = receiver_email
 

@@ -318,13 +318,13 @@ class Modem(threading.Thread):
 
         if self.balance < self.modem_config.account_balance_critical:
             s = f"Modem[{self.identifier}]: Critical: Account balance of {self.balance} {self.modem_config.ussd_currency} " \
-                "is lower than threshold of {self.modem_config.account_balance_critical} {self.modem_config.ussd_currency}."
+                f"is lower than threshold of {self.modem_config.account_balance_critical} {self.modem_config.ussd_currency}."
             self.l.warning(s)
             return "CRITICAL", s
 
         elif self.balance < self.modem_config.account_balance_warning:
             s = f"Modem[{self.identifier}]: Warning: Account balance of {self.balance} {self.modem_config.ussd_currency} " \
-                "is lower than threshold of {self.modem_config.account_balance_warning} {self.modem_config.ussd_currency}."
+                f"is lower than threshold of {self.modem_config.account_balance_warning} {self.modem_config.ussd_currency}."
             self.l.warning(s)
             return "WARNING", s
 

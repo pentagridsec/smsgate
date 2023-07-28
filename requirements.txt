@@ -3,7 +3,7 @@ Automat==22.10.0
 bcrypt==4.0.1
 cffi==1.15.1
 constantly==15.1.0
-cryptography==41.0.1
+cryptography==41.0.2
 hyperlink==21.0.0
 idna==3.4
 incremental==22.10.0
@@ -14,8 +14,8 @@ pyOpenSSL==23.2.0
 pyseccomp==0.1.2
 pyserial==3.5
 python-gsmmodem-new==0.13.0
-service-identity==21.1.0
+service-identity==23.1.0
 six==1.16.0
 Twisted==22.10.0
-typing-extensions==4.6.3
+typing_extensions==4.7.1
 zope.interface==6.0

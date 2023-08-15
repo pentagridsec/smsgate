@@ -1,4 +1,4 @@
-``SMSgate`` is a Python-based interface for sending and especially receiving SMS using multiple GSM modems and SIM cards.
+Pentagrid's ``SMSgate`` is a Python-based interface for sending and especially receiving SMS using multiple GSM modems and SIM cards.
 
 .. contents:: 
    :local:

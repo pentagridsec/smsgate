@@ -180,7 +180,7 @@ def main():
             return shell(args.host, args.port, ca_file, api_token)
 
     except ConnectionRefusedError:
-        print(f"Failed to connect to {host}:{port}.")
+        print(f"Failed to connect to {args.host}:{args.port}.")
         return
         
 if __name__ == "__main__":

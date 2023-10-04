@@ -144,6 +144,7 @@ Install SMS gateway
 
 * Create a directory to store runtime data
 ::
+
     mkdir /var/smsgate
 
 * Fix permissions

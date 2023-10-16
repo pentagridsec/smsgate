@@ -56,6 +56,7 @@ from gsmmodem.exceptions import (
     IncorrectPinError,
     GsmModemException,
     CmeError,
+    CmsError,
 )
 from gsmmodem.modem import GsmModem, SerialComms, SentSms, ReceivedSms
 
@@ -634,6 +635,8 @@ class Modem(threading.Thread):
             self.modem.close()
             return False
 
+        self._delete_sms()
+
         # We do not check the balance immediately, but wait a bit.
         # self.check_balance()
 
@@ -651,6 +654,16 @@ class Modem(threading.Thread):
         Set human-readable status message to "Ready."
         """
         self.status = "Ready."
+
+    def _delete_sms(self, all:bool=False) -> None:
+        # Delete all unread/unset stored SMS
+        try:
+            if all:
+                self.modem.write("AT+CMGD=,4\r\n")
+            else:
+                self.modem.write("AT+CMGD=,2\r\n")
+        except CmsError:
+            self.l.warning("Exception: Failed to delete SMS.")
 
     def _send_ussd_ucs2(self, code: str) -> str:
         """

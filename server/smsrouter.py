@@ -37,11 +37,13 @@
 # -----------------------------------------------------------------------------
 from typing import Optional, List
 
+from modem import Modem
 
 class SmsRouter:
     """Simple router that decides via which modem an SMS should be sent.
     First, the algorithm checks for valid phone number prefixes. Each modem/SIM
-    can be registered for a prefix. Second, it checks for costs.
+    can be registered for a prefix. Second, it checks for costs. Furthermore, the
+    router checks if the modem is available.
 
     There is no sophisticated modeling of prices. Currencies do not exist in this model.
     Foreign SIMs might be managed in a foreign currency and to handle
@@ -55,15 +57,19 @@ class SmsRouter:
         """
         self.routes = {}
         self.costs = {}
+        self.modem = {}
 
-    def add(self, identifier: str, prefixes: List[str], costs: float) -> None:
+    def add(self, identifier: str, prefixes: List[str], costs: float, modem: Modem) -> None:
         """
         Add routes to the table.
         @param identifier: A modem identifier that this route belongs to.
         @param prefixes: A list of phone number prefixes such as "+49152" and "+49".
         @param costs: Costs per SMS, but without a currency.
+        @param modem: A modem object to allow checking if the modem is ready.
         """
 
+        self.modem[identifier] = modem
+        
         # costs for sending SMS in a table like:
         # '01' -> 0.05
         self.costs[identifier] = costs
@@ -77,6 +83,8 @@ class SmsRouter:
                 self.routes[prefix] = {identifier}
             else:
                 self.routes[prefix].add(identifier)
+
+
 
     def get(self, prefix: str) -> Optional[str]:
         """
@@ -92,7 +100,12 @@ class SmsRouter:
             sub_prefix = prefix[0: len(prefix) - i]
             if sub_prefix in self.routes:
                 for c in self.routes[sub_prefix]:
-                    candidates.add(c)
+
+                    # c is a modem identifier
+                    # Check if the modem is ready, then add itr
+                    state, log = self.modems[c].get_health_state()
+                    if state == "OK":
+                        candidates.add(c)
 
         # Second, return the one with the lowest cost
         if len(candidates) > 0:

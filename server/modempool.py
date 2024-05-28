@@ -94,7 +94,7 @@ class ModemPool:
         self.stats_received[identifier] = 0
 
         if modem:
-            self.router.add(identifier, modem.get_prefixes(), modem.get_costs())
+            self.router.add(identifier, modem.get_prefixes(), modem.get_costs(), modem)
 
     def set_event_thread(self, event_available: threading.Event) -> None:
         """
@@ -174,7 +174,7 @@ class ModemPool:
     ) -> List[str]:
         """
         Retrieve modem identifier for the modem that matches a given phone number.
-        Otherwise return all modem identifier.
+        Otherwise, return all modem identifier.
         @param phone_number: A phonenumber to look up or None
         @return: Returns a list of modem identifiers (basically a string label). The returned list is empty, if a
             matching modem was not found.
@@ -195,7 +195,8 @@ class ModemPool:
     def send_sms(self, sms: SMS) -> str:
         """
         Send an SMS by putting it into the sending queue.
-        If the SMS object has a sender defined, this sender will also define the sending modem.
+        If the SMS object has a sender defined, this sender will also define the sending modem. If the sending modem is
+            not available, the decision on which sender to use is handed over to the SmsRouter.
         If the SMS object has no sender defined, the ModemPool will use the SmsRouter to decide via which modem the SMS
             will be sent.
         You need to call process_outgoing_sms() to really send SMS.
@@ -242,6 +243,14 @@ class ModemPool:
                     self.l.warning(f"An SMS should be sent, a sender is specified as {sms.get_sender()}, but it was "
                                    "not possible to find a matching modem/SIM card. Fallback to let the router "
                                    "decide which modem to use.")
+
+            # check health state
+            if identifier:
+                state, log = self.modems[identifier].get_health_state()
+                if state != "OK":
+                    self.l.warning(f"An SMS should be sent, a sender is specified as {sms.get_sender()}, but the modem "
+                                   "seems to have a problem. Fallback to let the router decide which modem to use.")
+                    identifier = None
 
             if identifier is None:
                 identifier = self.router.get(sms.get_recipient())

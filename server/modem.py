@@ -622,18 +622,18 @@ class Modem(threading.Thread):
             return False
 
         self.l.debug(f"Checking for network coverage...")
-        self.status = "Waiting for network."
 
-        try:
-            self.modem.waitForNetworkCoverage(600)
-            self.status = "Network found."
-        except TimeoutException:
-            self.l.error(
-                f"Network signal strength is not sufficient, please adjust modem position/antenna and try again."
-            )
-            self.status = "Error: Failed to connect to network."
-            self.modem.close()
-            return False
+        max_try = 10
+        for i in range(0,max_try):
+            self.status = f"Waiting for network ({i}/{max_try})."
+            try:
+                self.modem.waitForNetworkCoverage(120)
+                self.status = "Network found."
+            except TimeoutException:
+                self.l.error(f"Error: Failed to connect to network. Bad signal?")
+                self.status = "Error: Failed to connect to network."
+                self.modem.close()
+                return False
 
         self._delete_sms()
 

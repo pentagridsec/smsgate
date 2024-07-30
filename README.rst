@@ -242,7 +242,7 @@ disables the function.
 The ``prefixes`` configuration value specifies which phone networks a modem
 respectively a SIM card is responsible for. The setting's value is a list of
 phone number prefixes in E.123 international format, which is used to feed
-the SMS router. The standard router is an simple implementation with a
+the SMS router. The standard router is a simple implementation with a
 preference for low costs. Additionally, the list is also an allowed list.
 If a prefix is not on the list, there is no route to the network. The
 ``costs_per_sms`` is the costs to send an SMS to a destination network. There

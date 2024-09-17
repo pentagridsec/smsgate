@@ -112,10 +112,15 @@ def shell(host, port, ca_file, api_token):
     
     while command != 'exit':
 
-        command = input("+ Command (ussd, sms, status, exit): ")
+        command = input("+ Command (ussd, sms, status, loop-status, exit): ")
 
         if command == 'status' or command == '':
             get_stats(host, port, ca_file, api_token)
+        elif command == 'loop-status':
+            while True:
+                print("\033[2J+ Exit loop with Ctrl-C\n")
+                get_stats(host, port, ca_file, api_token)
+                time.sleep(3)
         elif command == 'ussd':
             phone_number = input_phone_number(phone_number)
             ussd_code = input("+ USSD code: ")

@@ -1,0 +1,46 @@
+{
+  "@context": "https://openvex.dev/ns/v0.2.0",
+  "@id": "https://openvex.dev/docs/public/vex-491e507783dd434610cbd533e15bf05d2a6d8d079ded3d6f7be0e848d4c5c497",
+  "author": "Unknown Author",
+  "timestamp": "2024-10-04T14:56:59.597725+02:00",
+  "last_updated": "2024-10-04T14:56:59.653949+02:00",
+  "version": 3,
+  "statements": [
+    {
+      "vulnerability": {
+        "name": "CVE-2024-3651"
+      },
+      "timestamp": "2024-10-04T14:56:59.597726+02:00",
+      "products": [
+        {
+          "@id": "pkg:pypi/idna@3.6"
+        }
+      ],
+      "status": "under_investigation"
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2024-41671"
+      },
+      "timestamp": "2024-10-04T14:56:59.626889+02:00",
+      "products": [
+        {
+          "@id": "pkg:pypi/twisted@24.3.0"
+        }
+      ],
+      "status": "under_investigation"
+    },
+    {
+      "vulnerability": {
+        "name": "CVE-2024-41810"
+      },
+      "timestamp": "2024-10-04T14:56:59.65395+02:00",
+      "products": [
+        {
+          "@id": "pkg:pypi/twisted@24.3.0"
+        }
+      ],
+      "status": "under_investigation"
+    }
+  ]
+}

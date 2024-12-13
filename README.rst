@@ -192,7 +192,7 @@ respectively SIM card is shown below.
     provider = Myprovider
     pin = 2342
     ussd_account_balance = *101#
-    ussd_account_balance_regexp = Ihr Guthaben beträgt: ([\d+\,]+)
+    #ussd_account_balance_regexp = Ihr Guthaben beträgt: ([\d+\,]+)
     currency = EUR
     account_balance_warning = 10.00
     account_balance_critical = 5.00
@@ -231,12 +231,14 @@ require vouchers to be loaded to an account. When the USSD code is sent, the
 network often returns a human-readable string. The ``ussd_account_balance_regexp``
 is a regular expression, which is checked against the string returned by the
 ``ussd_account_balance`` operation in order to extract the account balance
-value in a currency referred via ``currency``. If the account balance is
+value in a currency referred via ``currency``. The default regular expression for
+``ussd_account_balance_regexp`` is ``(\d+[\,\.]\d\d)``, which should match
+in most cases. If the account balance is
 below a certain threshold, a warning respectively a fault is triggered
 depending on the underrun of ``account_balance_warning`` or
-``account_balance_critical``. If there is no ``ussd_account_balance`` or no
-``ussd_account_balance_regexp`` setting, the balance is not checked. If
-``account_balance_warning`` and ``account_balance_critical`` are set to
+``account_balance_critical``. If there is no ``ussd_account_balance``
+setting, the balance is not checked. If ``account_balance_warning``
+and ``account_balance_critical`` are set to
 zero, neither a warning nor a critical is triggered, which effectively
 disables the function.
 

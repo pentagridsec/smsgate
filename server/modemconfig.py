@@ -97,15 +97,6 @@ class ModemConfig:
             l.warning("No USSD definition for checking account balance defined.")
             # no return
 
-        if self.ussd_account_balance and (
-                self.ussd_account_balance_regexp is None
-                or self.ussd_account_balance_regexp == ""
-        ):
-            l.warning(
-                "There is no regular expression defined to extract the account balance from the USSD response."
-            )
-            # no return
-
         if self.sms_self_test_interval not in ["monthly", "weekly", "daily"]:
             l.warning("The SMS self test interval cannot be parsed.")
             return False
@@ -131,7 +122,7 @@ def read_modem_config(identifier: str, sim_config: configparser.ConfigParser,
         sim_config.getboolean(identifier, "wait_for_delivery", fallback=False),
         sim_config.get(identifier, "phone_number", fallback=None),
         sim_config.get(identifier, "ussd_account_balance", fallback=None),
-        sim_config.get(identifier, "ussd_account_balance_regexp", fallback=None),
+        sim_config.get(identifier, "ussd_account_balance_regexp", fallback="(\d+[\,\.]\d\d)"),
         sim_config.get(identifier, "currency", fallback="EUR"),
         sim_config.getfloat(identifier, "account_balance_warning", fallback=5),
         sim_config.getfloat(identifier, "account_balance_critical", fallback=1),

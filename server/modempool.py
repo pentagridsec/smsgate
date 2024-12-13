@@ -423,9 +423,11 @@ class ModemPool:
                 stats[identifier]["health_state_short"] = _none_to_str(health[0])
                 stats[identifier]["health_state_message"] = _none_to_str(health[1])
                 stats[identifier]["init_counter"] = m.get_init_counter()
-                stats[identifier]["last_init"] = m.get_last_init().strftime(
-                    "%Y-%m-%d %H:%M"
-                )
+
+                fmts = "%Y-%m-%d %H:%M"
+                stats[identifier]["last_init"] = m.get_last_init().strftime(fmts)
+                stats[identifier]["last_received"] = m.get_last_received().strftime(fmts) if m.get_last_received() else ""
+                stats[identifier]["last_sent"] = m.get_last_sent().strftime(fmts) if m.get_last_sent() else ""
 
         self.l.info(stats)
         return stats

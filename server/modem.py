@@ -88,6 +88,8 @@ class Modem(threading.Thread):
         self.status = None
         self.init_counter = 0
         self.last_init = datetime.datetime.now(tz=None)
+        self.last_received = None
+        self.last_sent = None
 
         self.l = logging.getLogger(f"Modem [{identifier}]")
 
@@ -255,6 +257,20 @@ class Modem(threading.Thread):
         """
         return self.last_init
 
+    def get_last_received(self) -> Optional[datetime.datetime]:
+        """
+        Get the timestamp of the last received SMS.
+        @return: Returns the timestamp of the last received SMS as datetime object or None.
+        """
+        return self.last_received
+
+    def get_last_sent(self) -> Optional[datetime.datetime]:
+        """
+        Get the timestamp of the last sent SMS.
+        @return: Returns the timestamp of the last sent SMS as datetime object or None.
+        """
+        return self.last_sent
+
     def _handle_sms(self, _sms: ReceivedSms) -> None:
         """
         Handle incoming SMS from the python-gsmmodem-new layer.
@@ -262,6 +278,8 @@ class Modem(threading.Thread):
         """
 
         self.l.info("== SMS message received ==")
+
+        self.last_received = datetime.datetime.now(tz=None)
 
         # first check if we sent the SMS to ourself
         if (
@@ -339,6 +357,7 @@ class Modem(threading.Thread):
             delivery status.
         """
         self.sms_sender_queue.put(_sms)
+        self.last_sent = datetime.datetime.now(tz=None)
 
     def get_delivery_status(self, sms_id: str) -> bool:
         """
@@ -763,7 +782,7 @@ class Modem(threading.Thread):
                                "USSD response any further.")
                 return None
 
-            result = re.match(self.modem_config.ussd_account_balance_regexp, response)
+            result = re.search(self.modem_config.ussd_account_balance_regexp, response)
             if result:
                 balance = result.group(1)
                 self.l.debug(f"Balance as string: {balance} {self.get_currency()}")
@@ -773,8 +792,8 @@ class Modem(threading.Thread):
 
                 return self.balance
             else:
-                self.l.error(f"Error: Regular expression [{self.modem_config.ussd_account_balance_regexp}] "
-                             "failed for string [{response}]")
+                self.l.error(f"Error: Regular expression [{self.modem_config.ussd_account_balance_regexp}] " +
+                             f"failed for string [{response}]")
         except TimeoutException:
             self.l.error("Error: Failed to send USSD message.")
 
@@ -834,7 +853,7 @@ class Modem(threading.Thread):
         @return: Returns the modem's internal health state as tuple of State, Message. State is either "OK", "WARNING",
             or "CRITICAL". Message is a human-readable string giving details about the issue. Message may be a None.
         """
-        self.l.info(f"Run health check.")
+        self.l.info(f"Run health check for modem.")
         self.last_health_check = datetime.datetime.now()
 
         if self.modem is None:
@@ -890,17 +909,17 @@ class Modem(threading.Thread):
         elif self.modem_config.sms_self_test_interval == "weekly":
             if now.weekday == 1:
                 day_matches = True
-        else:
+        else: # Third option is daily
             day_matches = True
 
         if day_matches:
 
-            self.l.info("Day for the SMS self test matches.")
             seconds_since_midnight = (
                     now - now.replace(hour=0, minute=0, second=0, microsecond=0)
             ).total_seconds()
+            self.l.info(f"Day for the SMS self test matches. There are {seconds_since_midnight} seconds since midnight.")
 
-            if seconds_since_midnight < self.modem_config.health_check_interval:
+            if seconds_since_midnight <= self.modem_config.health_check_interval:
                 # Have checked balance thresholds before, not necessarily the online-balance,
                 # but the last balance value we have seen and stored.
                 self.l.info("Send test SMS to ourself.")
@@ -908,7 +927,7 @@ class Modem(threading.Thread):
 
             elif (
                     self.health_check_expected_token
-                    and seconds_since_midnight < 2 * self.modem_config.health_check_interval
+                    and seconds_since_midnight <= 2 * self.modem_config.health_check_interval
             ):
                 # The expected token was not cleared, which means the expected SMS was not received.
                 # Therefore, we send another SMS
@@ -970,8 +989,10 @@ class Modem(threading.Thread):
                     _sms = self.sms_sender_queue.get(timeout=60)
                     self._do_send_sms(_sms)
                 except queue.Empty:
-                    # start a health check?
-                    self._do_health_check()
+                    pass
+                
+                # start a health check?
+                self._do_health_check()
 
             except (
                     TimeoutException,

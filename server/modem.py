@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# Copyright (c) 2022 Martin Schobert, Pentagrid AG
+# Copyright (c) 2022-2025 Martin Schobert, Pentagrid AG
 #
 # All rights reserved.
 #
@@ -91,10 +91,13 @@ class Modem(threading.Thread):
         self.last_received = None
         self.last_sent = None
 
-        self.l = logging.getLogger(f"Modem [{identifier}]")
+        self.stats_sent_sms = 0
+        self.stats_received_sms = 0
 
         self.current_network = None
         self.current_signal = 0
+
+        self.l = logging.getLogger(f"Modem [{identifier}]")
 
         threading.Thread.__init__(self)
         self.start()
@@ -271,6 +274,20 @@ class Modem(threading.Thread):
         """
         return self.last_sent
 
+    def get_stats_sent_sms(self) -> int:
+        """
+        Get the counter for sent SMS.
+        @return: Returns number of sent SMS.
+        """
+        return self.stats_sent_sms
+
+    def get_stats_received_sms(self) -> int:
+        """
+        Get the counter for received SMS.
+        @return: Returns number of received SMS.
+        """
+        return self.stats_received_sms
+
     def _handle_sms(self, _sms: ReceivedSms) -> None:
         """
         Handle incoming SMS from the python-gsmmodem-new layer.
@@ -280,6 +297,7 @@ class Modem(threading.Thread):
         self.l.info("== SMS message received ==")
 
         self.last_received = datetime.datetime.now(tz=None)
+        self.stats_received_sms += 1
 
         # first check if we sent the SMS to ourself
         if (
@@ -358,6 +376,7 @@ class Modem(threading.Thread):
         """
         self.sms_sender_queue.put(_sms)
         self.last_sent = datetime.datetime.now(tz=None)
+        self.stats_sent_sms += 1
 
     def get_delivery_status(self, sms_id: str) -> bool:
         """

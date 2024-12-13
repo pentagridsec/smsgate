@@ -76,10 +76,6 @@ class ModemPool:
 
         self.buffered_sms = {}  # key is a modem identifier, value a list of SMS objects
 
-        # some statistics
-        self.stats_sent = {}
-        self.stats_received = {}
-
         self.l = logging.getLogger("ModemPool")
 
     def add_modem(self, modem: Modem) -> None:
@@ -89,9 +85,6 @@ class ModemPool:
         """
         identifier = modem.get_identifier()
         self.modems[identifier] = modem
-
-        self.stats_sent[identifier] = 0
-        self.stats_received[identifier] = 0
 
         if modem:
             self.router.add(identifier, modem.get_prefixes(), modem.get_costs(), modem)
@@ -266,9 +259,6 @@ class ModemPool:
                 # remember where the SMS was sent.
                 self.sent_sms[sms.get_id()] = identifier
 
-                # add to stats
-                self.stats_sent[identifier] += 1
-
             else:
                 self.l.error(f"Failed to find a way to deliver SMS {sms.get_id()}. The SMS is removed from the "
                              "queue and won't be put back.")
@@ -369,9 +359,6 @@ class ModemPool:
                     sms = modem.get_sms()
                     if sms:
                         self._buffer_sms(identifier, sms)
-
-                        # add to stats
-                        self.stats_received[identifier] += 1
                         self.l.debug(f"New SMS found for modem {identifier}.")
                         return sms
 
@@ -414,10 +401,8 @@ class ModemPool:
                 stats[identifier]["balance"] = _none_to_str(m.get_balance())
                 stats[identifier]["currency"] = _none_to_str(m.get_currency())
 
-                stats[identifier]["sent"] = _none_to_str(self.stats_sent[identifier])
-                stats[identifier]["received"] = _none_to_str(
-                    self.stats_received[identifier]
-                )
+                stats[identifier]["sent"] = _none_to_str(m.get_stats_sent_sms())
+                stats[identifier]["received"] = _none_to_str(m.get_stats_received_sms())
 
                 health = m.get_health_state()
                 stats[identifier]["health_state_short"] = _none_to_str(health[0])

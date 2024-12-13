@@ -81,11 +81,11 @@ def get_stats(host, port, ca_file, api_token):
     status = result[0]
     stats = result[1]
 
-    print(f"{'#':4} {'Port':15} {'Phone number':15} {'dB':>4} {'Network':25} {'Balance':9} {'Snt':3} {'Rcv':3} {'#Init':5} {'Last init':16} {'Health':10} {'Health state message':25} {'Status':25}")
+    print(f"{'#':4} {'Port':15} {'Phone number':15} {'dB':>4} {'Network':25} {'Balance':9} {'#Snt':4} {'Last sent':16} {'#Rcv':4} {'Last recv':16} {'#Init':5} {'Last init':16} {'Health':10} {'Health state message':25} {'Status':25}")
 
     for identifier in stats:
         i = stats[identifier]
-        print(f"{identifier:4} {i['port']:15} {i['phone_number']:15} {i['current_signal']:>4} {i['current_network']:25} {i['currency']:3} {i['balance']:5} {i['sent']:3} {i['received']:3} {i['init_counter']:5} {i['last_init']:16} {i['health_state_short']:10} {i['health_state_message']:25} {i['status']:25}")
+        print(f"{identifier:4} {i['port']:15} {i['phone_number']:15} {i['current_signal']:>4} {i['current_network']:25} {i['currency']:3} {i['balance']:5} {i['sent']:4} {i['last_sent']:16} {i['received']:4} {i['last_received']:16} {i['init_counter']:5} {i['last_init']:16} {i['health_state_short']:10} {i['health_state_message']:25} {i['status']:25}")
 
 
 def input_phone_number(default):

@@ -703,6 +703,7 @@ class Modem(threading.Thread):
         except CmsError:
             self.l.warning("Exception: Failed to delete SMS.")
 
+
     def _send_ussd_ucs2(self, code: str) -> str:
         """
         Send USSD code in UCS2 format.
@@ -829,7 +830,9 @@ class Modem(threading.Thread):
             # sendSms returns a SentSms object
             self.status = "Send SMS."
             self.sent_sms[_sms.get_id()] = self.modem.sendSms(
-                _sms.get_recipient(), _sms.get_text(), waitForDeliveryReport=False
+                _sms.get_recipient(), _sms.get_text(),
+                waitForDeliveryReport=False,
+                sendFlash=_sms.is_flash()
             )
             return True
         except TimeoutException:

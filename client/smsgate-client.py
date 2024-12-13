@@ -62,11 +62,11 @@ def send_ussd(host, port, ca_file, api_token, sender, ussd_code):
 
             
 
-def send_sms(host, port, ca_file, api_token, sender, to, text):
+def send_sms(host, port, ca_file, api_token, sender, to, text, flash):
     
     s = create_client(host, port, ca_file)
     print("+ Sending SMS and waiting for a response ...")
-    uuid = s.send_sms(api_token, sender, to, text)
+    uuid = s.send_sms(api_token, sender, to, text, flash)
 
     while s.get_delivery_status(api_token, uuid) == False:
         print("  Waiting for delivery ...")
@@ -128,8 +128,9 @@ def shell(host, port, ca_file, api_token):
         elif command == 'sms':
             phone_number = input_phone_number(phone_number)
             destination = input("+ Destination: ")
-            message = input("+ Message: ")            
-            send_sms(host, port, ca_file, api_token, phone_number, destination, message)
+            message = input("+ Message: ")
+            flash = input("+ Flash message (y/n): ").lower().strip() == 'y'
+            send_sms(host, port, ca_file, api_token, phone_number, destination, message, flash)
     return 
     
         
@@ -152,6 +153,7 @@ def cmd_parser():
     parser_b =  subparsers.add_parser('send-sms', help='Send SMS')    
     parser_b.add_argument('--to', metavar='NUMBER', help='The recipient.', required=True)
     parser_b.add_argument('--text', metavar='TEXT', help='The text to send', required=True)
+    parser_b.add_argument('--flash', help='Send SMS as flash message', action='store_true')
     parser_b.set_defaults(sms=True)
     
     parser_c =  subparsers.add_parser('stats', help='Retrieve status information from SMSGate')    
@@ -176,7 +178,7 @@ def main():
             return send_ussd(args.host, args.port, ca_file, api_token, sender, args.code)
     
         elif 'sms' in args:
-            return send_sms(args.host, args.port, ca_file, api_token, sender, args.to, args.text)
+            return send_sms(args.host, args.port, ca_file, api_token, sender, args.to, args.text, args.flash)
         
         elif 'stats' in args:
             return get_stats(args.host, args.port, ca_file, api_token)

@@ -55,6 +55,7 @@ class SMS:
         timestamp: Optional[datetime.datetime] = None,
         sender: Optional[str] = None,
         receiving_modem: Optional[Modem] = None,
+        flash: bool = False,
     ) -> None:
         """
         This class represents an SMS.
@@ -64,6 +65,7 @@ class SMS:
         @param timestamp: A datetime representing the creation timestampt of this SMS.
         @param sender: The sender's phone number in international format as string. For received SMS, this is sometimes a human readable string with a name.
         @param receiving_modem: The receiving modem's identifier.
+        @param flash: Send SMS as flash message, which should pop up on the destination phone and then disappear.
         """
         self.sms_id = sms_id if sms_id else str(uuid.uuid4())
         self.recipient = recipient
@@ -72,6 +74,7 @@ class SMS:
         self.created_timestamp = datetime.datetime.now()
         self.sender = sender
         self.receiving_modem = receiving_modem
+        self.flash = flash
 
     def get_timestamp(self) -> datetime.datetime:
         """ Returns the timestamp as Python datetime. """
@@ -96,6 +99,10 @@ class SMS:
     def get_sender(self) -> str:
         """ Returns the sender as string. """
         return self.sender
+
+    def is_flash(self) -> bool:
+        """ Returns status if the SMS is a flash SMS. """
+        return self.flash
 
     def has_sender(self) -> bool:
         """

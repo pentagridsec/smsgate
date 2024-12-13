@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# Copyright (c) 2022 Martin Schobert, Pentagrid AG
+# Copyright (c) 2022-2025 Martin Schobert, Pentagrid AG
 #
 # All rights reserved.
 #
@@ -128,14 +128,14 @@ class RPCServer(xmlrpc.XMLRPC):
         return "OK"
 
     def xmlrpc_send_sms(
-            self, token: str, sender: str, recipient: str, message: str
+            self, token: str, sender: str, recipient: str, message: str, flash: bool
     ) -> str:
         """
         Exposed RPC function enqueues an SMS.
 
         Warning: Sending SMS may be used to commit fraud. It is possible to pay via SMS,
-        and to book options, which could result in unwanted costs. To use this feature, SMS
-        delivery must be enabled in the configuration file.
+        and to book mobile subscription options, which could result in unwanted costs.
+        To use this feature, SMS delivery must be enabled in the configuration file.
 
         To check the delivery status, call RPC function get_delivery_status().
 
@@ -166,7 +166,7 @@ class RPCServer(xmlrpc.XMLRPC):
             if not sender:
                 raise xmlrpc.Fault(400, "Invalid sender format.")
 
-        new_sms = sms.SMS(sms_id=None, recipient=recipient, sender=sender, text=message)
+        new_sms = sms.SMS(sms_id=None, recipient=recipient, sender=sender, text=message, flash=flash)
         sms_id = self.pool.send_sms(new_sms)
         return sms_id
 
@@ -309,11 +309,6 @@ class MySSLContext(SSL.Context):
         self.set_options(SSL.OP_NO_SSLv3)
         self.set_options(SSL.OP_NO_TLSv1)
         self.set_options(SSL.OP_NO_TLSv1_1)
-
-        # For testing and debugging it may make sense to disable 1.2 or 1.3
-        # self.set_options(SSL.OP_NO_TLSv1_2)
-        # self.set_options(SSL.OP_NO_TLSv1_3)
-
         self.set_options(SSL.OP_CIPHER_SERVER_PREFERENCE)
         self.set_cipher_list(ciphers)
 

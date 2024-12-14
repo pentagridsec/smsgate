@@ -59,10 +59,12 @@ from gsmmodem.exceptions import (
     CmsError,
 )
 from gsmmodem.modem import GsmModem, SerialComms, SentSms, ReceivedSms
+from gsmmodem.pdu import decodeSmsPdu
 
 import modemconfig
 import sms
 import serialportmapper
+
 
 
 class Modem(threading.Thread):
@@ -288,10 +290,26 @@ class Modem(threading.Thread):
         """
         return self.stats_received_sms
 
-    def _handle_sms(self, _sms: ReceivedSms) -> None:
+    def _handle_incoming_gsmmodem_sms(self, _sms: ReceivedSms) -> None:
         """
         Handle incoming SMS from the python-gsmmodem-new layer.
         The _sms parameter is a gsmmodem.modem.ReceivedSms.
+        """
+        new_sms = sms.SMS(
+            sms_id=None,
+            recipient=self.modem_config.phone_number,
+            text=_sms.text,
+            sender=_sms.number,
+            timestamp=_sms.time,
+            receiving_modem=self,
+        )
+
+        self._handle_incoming_sms(new_sms)
+
+    def _handle_incoming_sms(self, _sms: sms.SMS) -> None:
+        """
+        Handle incoming SMS.
+        The _sms parameter is a sms.SMS object.
         """
 
         self.l.info("== SMS message received ==")
@@ -308,20 +326,12 @@ class Modem(threading.Thread):
             # clear value
             self.health_check_expected_token = None
 
-        new_sms = sms.SMS(
-            sms_id=None,
-            recipient=self.modem_config.phone_number,
-            text=_sms.text,
-            sender=_sms.number,
-            timestamp=_sms.time,
-            receiving_modem=self,
-        )
 
         # Only log SMS in debug mode and then without content
-        self.l.debug(new_sms.to_string(content=False))
+        self.l.debug(_sms.to_string(content=False))
 
         self.l.info(f"Put SMS in queue.")
-        self.sms_receiver_queue.put(new_sms)
+        self.sms_receiver_queue.put(_sms)
         self.event_available.set()
 
     def get_sms(self) -> sms.SMS:
@@ -613,10 +623,11 @@ class Modem(threading.Thread):
 
             self.status = f"Finally initializing port {self.current_port}."
             time.sleep(10)
-            self.modem = GsmModem(
+            self.modem = MyGsmModem(
+                self,
                 self.current_port,
                 self.modem_config.baud,
-                smsReceivedCallbackFunc=self._handle_sms,
+                smsReceivedCallbackFunc=self._handle_incoming_gsmmodem_sms,
                 exclusive=True,
             )  # was True
             self.modem.log = logging.getLogger(f"Modem [{self.identifier}]")
@@ -1030,3 +1041,39 @@ class Modem(threading.Thread):
                 self.close()
 
                 self._do_health_check(do_now=True)
+
+
+class MyGsmModem(GsmModem):
+
+    def __init__(self, gw_modem: Modem, port, baudrate=115200, incomingCallCallbackFunc=None,
+                 smsReceivedCallbackFunc=None, smsStatusReportCallback=None, requestDelivery=True, AT_CNMI="", *a,
+                 **kw):
+        super().__init__(port, baudrate, incomingCallCallbackFunc, smsReceivedCallbackFunc, smsStatusReportCallback,
+                         requestDelivery, AT_CNMI, *a, **kw)
+        self.gw_modem = gw_modem
+        self.l = logging.getLogger("MyGsmModem")
+
+    def _handleModemNotification(self, lines):
+
+        for i in range(0, len(lines)):
+            self.l.info(f"++++++++++++ Received line: [{lines[i]}]")
+            if lines[i].startswith('+CMT') and i + 1 < len(lines):
+                m = re.search('^\+CMT: "([^\"]+)"', lines[i])
+                if m:
+                    self.l.debug(f"From: {m.group(1)}")
+                self.l.debug(f"PDU: {lines[i + 1]}")
+                _sms = decodeSmsPdu(lines[i + 1])
+                self.l.debug(str(_sms))
+
+                new_sms = sms.SMS(
+                    sms_id=None,
+                    recipient=self.gw_modem.get_phone_number(),
+                    text=_sms['text'] if 'text' in _sms else None,
+                    sender=_sms['number'] if 'number' in _sms else None,
+                    timestamp=_sms['time'] if 'time' in _sms else None,
+                    receiving_modem=self.gw_modem,
+                    flash=_sms['protocol_id']==0 if 'protocol_id' in _sms else False
+                )
+                self.gw_modem._handle_incoming_sms(new_sms)
+
+        return super()._handleModemNotification(lines)

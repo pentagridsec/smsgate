@@ -130,6 +130,7 @@ class SMS:
             + f"Recipient         : {self.recipient}\n"
             + f"Message timestamp : {self.timestamp.strftime(ts_fmt)}\n"
             + f"Created timestamp : {self.created_timestamp.strftime(ts_fmt)}\n"
+            + f"Flash message     : {self.flash}\n"
         )
         if self.receiving_modem:
             text += f"Receiving modem   : {self.receiving_modem.get_identifier()}\n"

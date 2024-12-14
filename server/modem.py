@@ -1056,14 +1056,12 @@ class MyGsmModem(GsmModem):
     def _handleModemNotification(self, lines):
 
         for i in range(0, len(lines)):
-            self.l.info(f"++++++++++++ Received line: [{lines[i]}]")
+
             if lines[i].startswith('+CMT') and i + 1 < len(lines):
-                m = re.search('^\+CMT: "([^\"]+)"', lines[i])
-                if m:
-                    self.l.debug(f"From: {m.group(1)}")
-                self.l.debug(f"PDU: {lines[i + 1]}")
+                #m = re.search('^\+CMT: "([^\"]+)"', lines[i])
+                #if m:
+                #    self.l.debug(f"From: {m.group(1)}")
                 _sms = decodeSmsPdu(lines[i + 1])
-                self.l.debug(str(_sms))
 
                 new_sms = sms.SMS(
                     sms_id=None,

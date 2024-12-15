@@ -137,7 +137,7 @@ class SmsGate:
 
         while True:
             try:
-                self.l.debug("Check delivery queue if E-mail should be sent.")
+                self.l.debug("Check delivery queue if E-mail should be sent. There are about %d SMS in the SMTP delivery queue." % self.smtp_delivery_queue.qsize())
                 _sms = self.smtp_delivery_queue.get(timeout=10)
                 self.l.info(f"[{_sms.get_id()}] Event in SMS-to-Mail delivery queue.")
                 if _sms:

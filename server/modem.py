@@ -240,7 +240,7 @@ class Modem(threading.Thread):
 
     def get_status(self) -> Optional[str]:
         """
-        Get a textual string representing the current state of the modem in human-readbale form.
+        Get a textual string representing the current state of the modem in human-readable form.
         @return: Returns a message indicating the modem's current state. Value may be None.
         """
         return self.status
@@ -638,7 +638,7 @@ class Modem(threading.Thread):
             self.status = "Check port renumbering - Exception."
             return False
 
-        self.modem.smsTextMode = False
+        self.modem.smsTextMode = True # was False
 
         self.l.debug(f"Connecting to GSM modem on {self.current_port}.")
         self.status = "Connecting to modem."
@@ -649,6 +649,7 @@ class Modem(threading.Thread):
                 self.modem_config.pin,
                 waitingForModemToStartInSeconds=self.modem_config.wait_for_start,
             )
+            #self.modem.processStoredSms()
 
         except PinRequiredError:
             self.l.error(f"Error: SIM card PIN required. Please specify a PIN.")
@@ -684,7 +685,7 @@ class Modem(threading.Thread):
                 self.modem.close()
                 return False
 
-        self._delete_sms()
+        self._delete_sms(all=True)
 
         # We do not check the balance immediately, but wait a bit.
         # self.check_balance()
@@ -705,12 +706,14 @@ class Modem(threading.Thread):
         self.status = "Ready."
 
     def _delete_sms(self, all:bool=False) -> None:
-        # Delete all unread/unset stored SMS
+        # Delete all unread/unsent stored SMS
         try:
             if all:
-                self.modem.write("AT+CMGD=,4\r\n")
+                self.modem.deleteMultipleStoredSms(4)
+                #self.modem.write("AT+CMGD=,4\r\n")
             else:
-                self.modem.write("AT+CMGD=,2\r\n")
+                self.modem.deleteMultipleStoredSms(2)
+                #self.modem.write("AT+CMGD=,2\r\n")
         except CmsError:
             self.l.warning("Exception: Failed to delete SMS.")
 
@@ -877,6 +880,7 @@ class Modem(threading.Thread):
         self.l.info(f"Network           : " + (self.current_network or "N/A"))
         self.l.info(f"Signal strength   : " + str(self.current_signal))
         self.l.info(f"SMS Encoding      : " + (self.modem.smsEncoding or "N/A"))
+        self.l.info(f"SMS Text Mode     : " + str(self.modem.smsTextMode))
 
     def _really_do_health_check(self) -> Tuple[str, Optional[str]]:
         """

@@ -638,7 +638,7 @@ class Modem(threading.Thread):
             self.status = "Check port renumbering - Exception."
             return False
 
-        self.modem.smsTextMode = True # was False
+        self.modem.smsTextMode = False
 
         self.l.debug(f"Connecting to GSM modem on {self.current_port}.")
         self.status = "Connecting to modem."

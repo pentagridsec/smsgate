@@ -28,7 +28,7 @@ The SMS gateway implements a few features which are:
 - Support for API token to control API access
 - Support for Icinga/Nagios monitoring
 - Support for Munin monitoring
-- Support for sending flash SMS, useful for monitoring alerts.
+- Support for receiving flash SMS and sending flash SMS, useful for sending monitoring alerts.
 - An XML-RPC API client to interact with the service
 - Experimental SECCOMP support (may break things)
 

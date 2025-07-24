@@ -220,10 +220,11 @@ SMS or the USSD code.
 
 The ``provider`` is an
 information about the operator, the SIM card is associated with. It is not
-necessarily the same network operator the modem connects to. The information is not used
-but it may be helpful to find SIM cards in the config file. The ``pin`` setting is
-the SIM card PIN that unlocks secret keys on the SIM card to allow an
-authentication towards the GSM network. If there is no SIM, leave it blank.
+necessarily the same network operator the modem connects to. The information
+is just for information and not technically used but it may be helpful to
+find SIM cards in the config file. The ``pin`` setting is the SIM card PIN
+that unlocks secret keys on the SIM card to allow an authentication towards
+the GSM network. If there is no PIN, leave it blank.
 
 The ``ussd_account_balance`` is an USSD code to retrieve the account balance
 associated with the SIM card. This is required for pre-paid accounts, which
@@ -245,12 +246,14 @@ disables the function.
 The ``prefixes`` configuration value specifies which phone networks a modem
 respectively a SIM card is responsible for. The setting's value is a list of
 phone number prefixes in E.123 international format, which is used to feed
-the SMS router. The standard router is a simple implementation with a
+the SMS router. The SMS router is an internal component which selects an outgoing
+modem for sending an SMS. The standard router is a simple implementation with a
 preference for low costs. Additionally, the list is also an allowed list.
 If a prefix is not on the list, there is no route to the network. The
 ``costs_per_sms`` is the costs to send an SMS to a destination network. There
 is not conversion between currencies. There is also only a fixed price per
-SIM card. If the standard router does not fit, the model must be re-implemented.
+SIM card independent of the SMS destination. If the standard router does not
+fit, the model must be re-implemented.
 
 The ``health_check_interval`` specified in seconds is used for the internal
 monitoring. After this interval has expired, the server performs a modem, network

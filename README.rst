@@ -9,7 +9,7 @@ Short introduction
 ``SMSgate`` is a multi-modem interface based on the Python module
 `python-gsmmodem-new <https://github.com/babca/python-gsmmodem>`_, which is
 used for receiving and sending SMS. The main use case for this SMS gateway
-is receiving SMS and to forward the SMS or to allow XML-RPC clients to
+is receiving SMS and to forward the SMS as E-mail or to allow XML-RPC clients to
 fetch SMS via an API. The second use case is to send SMS alarms for
 service monitoring purposes.
 

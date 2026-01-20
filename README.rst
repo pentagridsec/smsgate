@@ -116,7 +116,7 @@ manager as possible, run:
     sudo apt install python3-openssl python3-twisted python3-service-identity python3-venv python3-bcrypt
     python3 -m venv venv
     source venv/bin/activate
-    pip3 install python-gsmmodem-new
+    pip install python-gsmmodem-new
 
 Otherwise if you prefer your Python modules to have in a virtual
 environment, run:
@@ -126,7 +126,7 @@ environment, run:
     sudo apt install python3-venv rustc librust-openssl-dev
     python3 -m venv venv
     source venv/bin/activate
-    pip3 install -r requirements.txt
+    pip install -r requirements.txt
    
    
 Install SMS gateway

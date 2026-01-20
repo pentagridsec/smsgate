@@ -843,6 +843,7 @@ class Modem(threading.Thread):
         try:
             # sendSms returns a SentSms object
             self.status = "Send SMS."
+            self.l.info(f"Sending SMS to {_sms.get_recipient()}.")
             self.sent_sms[_sms.get_id()] = self.modem.sendSms(
                 _sms.get_recipient(), _sms.get_text(),
                 waitForDeliveryReport=False,

@@ -1,1 +1,548 @@
-<?xml version="1.0" encoding="UTF-8"?><bom xmlns="http://cyclonedx.org/schema/bom/1.4" version="1" serialNumber="urn:uuid:31e918ac-ca2f-4c25-a35f-2dffdf9d3338"><metadata><timestamp>2025-02-25T10:38:05.591863+00:00</timestamp><tools><tool><vendor>CycloneDX</vendor><name>cyclonedx-bom</name><version>3.11.2</version></tool><tool><vendor>CycloneDX</vendor><name>cyclonedx-python-lib</name><version>3.1.5</version><externalReferences><reference type="build-system"><url>https://github.com/CycloneDX/cyclonedx-python-lib/actions</url></reference><reference type="distribution"><url>https://pypi.org/project/cyclonedx-python-lib/</url></reference><reference type="documentation"><url>https://cyclonedx.github.io/cyclonedx-python-lib/</url></reference><reference type="issue-tracker"><url>https://github.com/CycloneDX/cyclonedx-python-lib/issues</url></reference><reference type="license"><url>https://github.com/CycloneDX/cyclonedx-python-lib/blob/main/LICENSE</url></reference><reference type="release-notes"><url>https://github.com/CycloneDX/cyclonedx-python-lib/blob/main/CHANGELOG.md</url></reference><reference type="vcs"><url>https://github.com/CycloneDX/cyclonedx-python-lib</url></reference><reference type="website"><url>https://cyclonedx.org</url></reference></externalReferences></tool></tools></metadata><components><component type="library" bom-ref="6eb0c0e9-c37b-469d-9bca-eb8bab69cd62"><name>Automat</name><version>24.8.1</version><purl>pkg:pypi/automat@24.8.1</purl></component><component type="library" bom-ref="378a9148-401f-4e99-b04e-138430116249"><name>Twisted</name><version>24.11.0</version><purl>pkg:pypi/twisted@24.11.0</purl></component><component type="library" bom-ref="9660dfb0-dcb8-4cc5-953e-f927b1f8a02e"><name>attrs</name><version>25.1.0</version><purl>pkg:pypi/attrs@25.1.0</purl></component><component type="library" bom-ref="74b9bc12-6903-4d7f-8424-603e142b5f18"><name>bcrypt</name><version>4.2.1</version><purl>pkg:pypi/bcrypt@4.2.1</purl></component><component type="library" bom-ref="d63bc43f-cce2-46ca-b4d4-c09b4e582e3e"><name>cffi</name><version>1.17.1</version><purl>pkg:pypi/cffi@1.17.1</purl></component><component type="library" bom-ref="07ce5d51-b049-4c0b-92ab-9c30cb4f8964"><name>constantly</name><version>23.10.4</version><purl>pkg:pypi/constantly@23.10.4</purl></component><component type="library" bom-ref="1b5d122b-2773-4167-a79a-b2e806711500"><name>cryptography</name><version>44.0.1</version><purl>pkg:pypi/cryptography@44.0.1</purl></component><component type="library" bom-ref="0fb75700-b8ba-4ba0-bc21-e22ee32ab831"><name>hyperlink</name><version>21.0.0</version><purl>pkg:pypi/hyperlink@21.0.0</purl></component><component type="library" bom-ref="2aa5fdc3-e6a4-4b94-859b-923124e891e2"><name>idna</name><version>3.10</version><purl>pkg:pypi/idna@3.10</purl></component><component type="library" bom-ref="1288bb13-27c7-4582-bca5-c6d1077ebe1d"><name>incremental</name><version>24.7.2</version><purl>pkg:pypi/incremental@24.7.2</purl></component><component type="library" bom-ref="cfff2a73-51b5-4805-8103-009af53d6aee"><name>pyOpenSSL</name><version>25.0.0</version><purl>pkg:pypi/pyopenssl@25.0.0</purl></component><component type="library" bom-ref="9b7f7667-3c92-40f7-8cd8-ed9dd41b3d67"><name>pyasn1</name><version>0.6.1</version><purl>pkg:pypi/pyasn1@0.6.1</purl></component><component type="library" bom-ref="31beac4d-80d4-4719-9322-d8b820aa30fa"><name>pyasn1_modules</name><version>0.4.1</version><purl>pkg:pypi/pyasn1-modules@0.4.1</purl></component><component type="library" bom-ref="ea1c0f51-4ccf-4481-b1ad-b8b17daa2ba8"><name>pycparser</name><version>2.22</version><purl>pkg:pypi/pycparser@2.22</purl></component><component type="library" bom-ref="1efd9d63-a818-4c51-8697-fe298d609575"><name>pyseccomp</name><version>0.1.2</version><purl>pkg:pypi/pyseccomp@0.1.2</purl></component><component type="library" bom-ref="52ce1c72-9555-4514-bfa7-3476554e57ae"><name>pyserial</name><version>3.5</version><purl>pkg:pypi/pyserial@3.5</purl></component><component type="library" bom-ref="4c0c388e-89a9-4d3e-880f-f5786f887c91"><name>python-gsmmodem-new</name><version>0.13.0</version><purl>pkg:pypi/python-gsmmodem-new@0.13.0</purl></component><component type="library" bom-ref="2cfd1aef-5cb9-452b-a3f6-397fb6b91f5b"><name>service-identity</name><version>24.2.0</version><purl>pkg:pypi/service-identity@24.2.0</purl></component><component type="library" bom-ref="cb2ccf1a-7a3f-4945-b1fc-11415ef7b9ce"><name>six</name><version>1.17.0</version><purl>pkg:pypi/six@1.17.0</purl></component><component type="library" bom-ref="881e9c2a-356c-46c2-b8f8-2247fd56cab6"><name>tomli</name><version>2.2.1</version><purl>pkg:pypi/tomli@2.2.1</purl></component><component type="library" bom-ref="6fc7932b-e2dc-438a-8207-691944f668cc"><name>typing_extensions</name><version>4.12.2</version><purl>pkg:pypi/typing-extensions@4.12.2</purl></component><component type="library" bom-ref="2177d42f-3ce9-4e6e-9a51-5cc38e8f9a19"><name>zope.interface</name><version>7.2</version><purl>pkg:pypi/zope.interface@7.2</purl></component></components><dependencies><dependency ref="6eb0c0e9-c37b-469d-9bca-eb8bab69cd62" /><dependency ref="378a9148-401f-4e99-b04e-138430116249" /><dependency ref="9660dfb0-dcb8-4cc5-953e-f927b1f8a02e" /><dependency ref="74b9bc12-6903-4d7f-8424-603e142b5f18" /><dependency ref="d63bc43f-cce2-46ca-b4d4-c09b4e582e3e" /><dependency ref="07ce5d51-b049-4c0b-92ab-9c30cb4f8964" /><dependency ref="1b5d122b-2773-4167-a79a-b2e806711500" /><dependency ref="0fb75700-b8ba-4ba0-bc21-e22ee32ab831" /><dependency ref="2aa5fdc3-e6a4-4b94-859b-923124e891e2" /><dependency ref="1288bb13-27c7-4582-bca5-c6d1077ebe1d" /><dependency ref="cfff2a73-51b5-4805-8103-009af53d6aee" /><dependency ref="9b7f7667-3c92-40f7-8cd8-ed9dd41b3d67" /><dependency ref="31beac4d-80d4-4719-9322-d8b820aa30fa" /><dependency ref="ea1c0f51-4ccf-4481-b1ad-b8b17daa2ba8" /><dependency ref="1efd9d63-a818-4c51-8697-fe298d609575" /><dependency ref="52ce1c72-9555-4514-bfa7-3476554e57ae" /><dependency ref="4c0c388e-89a9-4d3e-880f-f5786f887c91" /><dependency ref="2cfd1aef-5cb9-452b-a3f6-397fb6b91f5b" /><dependency ref="cb2ccf1a-7a3f-4945-b1fc-11415ef7b9ce" /><dependency ref="881e9c2a-356c-46c2-b8f8-2247fd56cab6" /><dependency ref="6fc7932b-e2dc-438a-8207-691944f668cc" /><dependency ref="2177d42f-3ce9-4e6e-9a51-5cc38e8f9a19" /></dependencies></bom>
+{
+  "components": [
+    {
+      "bom-ref": "requirements-L2",
+      "description": "requirements line 2: Automat==25.4.16",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/Automat/"
+        }
+      ],
+      "name": "Automat",
+      "purl": "pkg:pypi/automat@25.4.16",
+      "type": "library",
+      "version": "25.4.16"
+    },
+    {
+      "bom-ref": "requirements-L9",
+      "description": "requirements line 9: Incremental==24.11.0",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/Incremental/"
+        }
+      ],
+      "name": "Incremental",
+      "purl": "pkg:pypi/incremental@24.11.0",
+      "type": "library",
+      "version": "24.11.0"
+    },
+    {
+      "bom-ref": "requirements-L22",
+      "description": "requirements line 22: Twisted==25.5.0",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/Twisted/"
+        }
+      ],
+      "name": "Twisted",
+      "purl": "pkg:pypi/twisted@25.5.0",
+      "type": "library",
+      "version": "25.5.0"
+    },
+    {
+      "bom-ref": "requirements-L1",
+      "description": "requirements line 1: attrs==25.4.0",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/attrs/"
+        }
+      ],
+      "name": "attrs",
+      "purl": "pkg:pypi/attrs@25.4.0",
+      "type": "library",
+      "version": "25.4.0"
+    },
+    {
+      "bom-ref": "requirements-L3",
+      "description": "requirements line 3: bcrypt==5.0.0",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/bcrypt/"
+        }
+      ],
+      "name": "bcrypt",
+      "purl": "pkg:pypi/bcrypt@5.0.0",
+      "type": "library",
+      "version": "5.0.0"
+    },
+    {
+      "bom-ref": "requirements-L4",
+      "description": "requirements line 4: cffi==2.0.0",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/cffi/"
+        }
+      ],
+      "name": "cffi",
+      "purl": "pkg:pypi/cffi@2.0.0",
+      "type": "library",
+      "version": "2.0.0"
+    },
+    {
+      "bom-ref": "requirements-L5",
+      "description": "requirements line 5: constantly==23.10.4",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/constantly/"
+        }
+      ],
+      "name": "constantly",
+      "purl": "pkg:pypi/constantly@23.10.4",
+      "type": "library",
+      "version": "23.10.4"
+    },
+    {
+      "bom-ref": "requirements-L6",
+      "description": "requirements line 6: cryptography==46.0.3",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/cryptography/"
+        }
+      ],
+      "name": "cryptography",
+      "purl": "pkg:pypi/cryptography@46.0.3",
+      "type": "library",
+      "version": "46.0.3"
+    },
+    {
+      "bom-ref": "requirements-L7",
+      "description": "requirements line 7: hyperlink==21.0.0",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/hyperlink/"
+        }
+      ],
+      "name": "hyperlink",
+      "purl": "pkg:pypi/hyperlink@21.0.0",
+      "type": "library",
+      "version": "21.0.0"
+    },
+    {
+      "bom-ref": "requirements-L8",
+      "description": "requirements line 8: idna==3.11",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/idna/"
+        }
+      ],
+      "name": "idna",
+      "purl": "pkg:pypi/idna@3.11",
+      "type": "library",
+      "version": "3.11"
+    },
+    {
+      "bom-ref": "requirements-L10",
+      "description": "requirements line 10: packaging==25.0",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/packaging/"
+        }
+      ],
+      "name": "packaging",
+      "purl": "pkg:pypi/packaging@25.0",
+      "type": "library",
+      "version": "25.0"
+    },
+    {
+      "bom-ref": "requirements-L14",
+      "description": "requirements line 14: pyOpenSSL==25.3.0",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/pyOpenSSL/"
+        }
+      ],
+      "name": "pyOpenSSL",
+      "purl": "pkg:pypi/pyopenssl@25.3.0",
+      "type": "library",
+      "version": "25.3.0"
+    },
+    {
+      "bom-ref": "requirements-L11",
+      "description": "requirements line 11: pyasn1==0.6.2",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/pyasn1/"
+        }
+      ],
+      "name": "pyasn1",
+      "purl": "pkg:pypi/pyasn1@0.6.2",
+      "type": "library",
+      "version": "0.6.2"
+    },
+    {
+      "bom-ref": "requirements-L12",
+      "description": "requirements line 12: pyasn1_modules==0.4.2",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/pyasn1_modules/"
+        }
+      ],
+      "name": "pyasn1_modules",
+      "purl": "pkg:pypi/pyasn1-modules@0.4.2",
+      "type": "library",
+      "version": "0.4.2"
+    },
+    {
+      "bom-ref": "requirements-L13",
+      "description": "requirements line 13: pycparser==2.23",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/pycparser/"
+        }
+      ],
+      "name": "pycparser",
+      "purl": "pkg:pypi/pycparser@2.23",
+      "type": "library",
+      "version": "2.23"
+    },
+    {
+      "bom-ref": "requirements-L15",
+      "description": "requirements line 15: pyseccomp==0.1.2",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/pyseccomp/"
+        }
+      ],
+      "name": "pyseccomp",
+      "purl": "pkg:pypi/pyseccomp@0.1.2",
+      "type": "library",
+      "version": "0.1.2"
+    },
+    {
+      "bom-ref": "requirements-L16",
+      "description": "requirements line 16: pyserial==3.5",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/pyserial/"
+        }
+      ],
+      "name": "pyserial",
+      "purl": "pkg:pypi/pyserial@3.5",
+      "type": "library",
+      "version": "3.5"
+    },
+    {
+      "bom-ref": "requirements-L17",
+      "description": "requirements line 17: python-gsmmodem-new==0.13.0",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/python-gsmmodem-new/"
+        }
+      ],
+      "name": "python-gsmmodem-new",
+      "purl": "pkg:pypi/python-gsmmodem-new@0.13.0",
+      "type": "library",
+      "version": "0.13.0"
+    },
+    {
+      "bom-ref": "requirements-L18",
+      "description": "requirements line 18: service-identity==24.2.0",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/service-identity/"
+        }
+      ],
+      "name": "service-identity",
+      "purl": "pkg:pypi/service-identity@24.2.0",
+      "type": "library",
+      "version": "24.2.0"
+    },
+    {
+      "bom-ref": "requirements-L19",
+      "description": "requirements line 19: setuptools==80.9.0",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/setuptools/"
+        }
+      ],
+      "name": "setuptools",
+      "purl": "pkg:pypi/setuptools@80.9.0",
+      "type": "library",
+      "version": "80.9.0"
+    },
+    {
+      "bom-ref": "requirements-L20",
+      "description": "requirements line 20: six==1.17.0",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/six/"
+        }
+      ],
+      "name": "six",
+      "purl": "pkg:pypi/six@1.17.0",
+      "type": "library",
+      "version": "1.17.0"
+    },
+    {
+      "bom-ref": "requirements-L21",
+      "description": "requirements line 21: tomli==2.4.0",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/tomli/"
+        }
+      ],
+      "name": "tomli",
+      "purl": "pkg:pypi/tomli@2.4.0",
+      "type": "library",
+      "version": "2.4.0"
+    },
+    {
+      "bom-ref": "requirements-L23",
+      "description": "requirements line 23: typing_extensions==4.15.0",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/typing_extensions/"
+        }
+      ],
+      "name": "typing_extensions",
+      "purl": "pkg:pypi/typing-extensions@4.15.0",
+      "type": "library",
+      "version": "4.15.0"
+    },
+    {
+      "bom-ref": "requirements-L24",
+      "description": "requirements line 24: zope.interface==8.2",
+      "externalReferences": [
+        {
+          "comment": "implicit dist url",
+          "type": "distribution",
+          "url": "https://pypi.org/simple/zope.interface/"
+        }
+      ],
+      "name": "zope.interface",
+      "purl": "pkg:pypi/zope.interface@8.2",
+      "type": "library",
+      "version": "8.2"
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "requirements-L1"
+    },
+    {
+      "ref": "requirements-L10"
+    },
+    {
+      "ref": "requirements-L11"
+    },
+    {
+      "ref": "requirements-L12"
+    },
+    {
+      "ref": "requirements-L13"
+    },
+    {
+      "ref": "requirements-L14"
+    },
+    {
+      "ref": "requirements-L15"
+    },
+    {
+      "ref": "requirements-L16"
+    },
+    {
+      "ref": "requirements-L17"
+    },
+    {
+      "ref": "requirements-L18"
+    },
+    {
+      "ref": "requirements-L19"
+    },
+    {
+      "ref": "requirements-L2"
+    },
+    {
+      "ref": "requirements-L20"
+    },
+    {
+      "ref": "requirements-L21"
+    },
+    {
+      "ref": "requirements-L22"
+    },
+    {
+      "ref": "requirements-L23"
+    },
+    {
+      "ref": "requirements-L24"
+    },
+    {
+      "ref": "requirements-L3"
+    },
+    {
+      "ref": "requirements-L4"
+    },
+    {
+      "ref": "requirements-L5"
+    },
+    {
+      "ref": "requirements-L6"
+    },
+    {
+      "ref": "requirements-L7"
+    },
+    {
+      "ref": "requirements-L8"
+    },
+    {
+      "ref": "requirements-L9"
+    }
+  ],
+  "metadata": {
+    "timestamp": "2026-01-20T10:26:20.834985+00:00",
+    "tools": {
+      "components": [
+        {
+          "description": "CycloneDX Software Bill of Materials (SBOM) generator for Python projects and environments",
+          "externalReferences": [
+            {
+              "type": "build-system",
+              "url": "https://github.com/CycloneDX/cyclonedx-python/actions"
+            },
+            {
+              "type": "distribution",
+              "url": "https://pypi.org/project/cyclonedx-bom/"
+            },
+            {
+              "type": "documentation",
+              "url": "https://cyclonedx-bom-tool.readthedocs.io/"
+            },
+            {
+              "type": "issue-tracker",
+              "url": "https://github.com/CycloneDX/cyclonedx-python/issues"
+            },
+            {
+              "type": "license",
+              "url": "https://github.com/CycloneDX/cyclonedx-python/blob/main/LICENSE"
+            },
+            {
+              "type": "release-notes",
+              "url": "https://github.com/CycloneDX/cyclonedx-python/blob/main/CHANGELOG.md"
+            },
+            {
+              "type": "vcs",
+              "url": "https://github.com/CycloneDX/cyclonedx-python/"
+            },
+            {
+              "type": "website",
+              "url": "https://github.com/CycloneDX/cyclonedx-python/#readme"
+            }
+          ],
+          "group": "CycloneDX",
+          "licenses": [
+            {
+              "license": {
+                "acknowledgement": "declared",
+                "id": "Apache-2.0"
+              }
+            }
+          ],
+          "name": "cyclonedx-py",
+          "type": "application",
+          "version": "6.0.0"
+        },
+        {
+          "description": "Python library for CycloneDX",
+          "externalReferences": [
+            {
+              "type": "build-system",
+              "url": "https://github.com/CycloneDX/cyclonedx-python-lib/actions"
+            },
+            {
+              "type": "distribution",
+              "url": "https://pypi.org/project/cyclonedx-python-lib/"
+            },
+            {
+              "type": "documentation",
+              "url": "https://cyclonedx-python-library.readthedocs.io/"
+            },
+            {
+              "type": "issue-tracker",
+              "url": "https://github.com/CycloneDX/cyclonedx-python-lib/issues"
+            },
+            {
+              "type": "license",
+              "url": "https://github.com/CycloneDX/cyclonedx-python-lib/blob/main/LICENSE"
+            },
+            {
+              "type": "release-notes",
+              "url": "https://github.com/CycloneDX/cyclonedx-python-lib/blob/main/CHANGELOG.md"
+            },
+            {
+              "type": "vcs",
+              "url": "https://github.com/CycloneDX/cyclonedx-python-lib"
+            },
+            {
+              "type": "website",
+              "url": "https://github.com/CycloneDX/cyclonedx-python-lib/#readme"
+            }
+          ],
+          "group": "CycloneDX",
+          "licenses": [
+            {
+              "license": {
+                "acknowledgement": "declared",
+                "id": "Apache-2.0"
+              }
+            }
+          ],
+          "name": "cyclonedx-python-lib",
+          "type": "library",
+          "version": "10.0.0"
+        }
+      ]
+    }
+  },
+  "serialNumber": "urn:uuid:689e19d6-6080-4c53-9146-85d0001c8ca8",
+  "version": 1,
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6"
+}

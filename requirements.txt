@@ -3,7 +3,7 @@ Automat==25.4.16
 bcrypt==5.0.0
 cffi==2.0.0
 constantly==23.10.4
-cryptography==46.0.3
+cryptography==46.0.5
 hyperlink==21.0.0
 idna==3.11
 Incremental==24.11.0

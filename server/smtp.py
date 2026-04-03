@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# Copyright (c) 2022 Martin Schobert, Pentagrid AG
+# Copyright (c) 2022-2026 Martin Schobert, Pentagrid AG
 #
 # All rights reserved.
 #
@@ -40,6 +40,7 @@ import datetime
 import logging
 import smtplib
 import ssl
+import time
 from email.mime.text import MIMEText
 from typing import Tuple
 
@@ -74,7 +75,7 @@ class SMTPDelivery:
         self.l = logging.getLogger("SMTPDelivery")
 
         if port == 25:
-            error_msg = "The client does not support STARTTLS"
+            error_msg = "SMTP error: This client does not implement STARTTLS support. Please use TLS."
             self.l.error(error_msg)
             self.health_state = "CRITICAL"
             self.health_logs = error_msg
@@ -92,9 +93,9 @@ class SMTPDelivery:
         context.options |= ssl.OP_NO_TLSv1_1
 
         self.server = smtplib.SMTP_SSL(self.host, self.port, context=context)
-        self.l.info(f"Try to log in as {self.user}")
+        self.l.info(f"Try to log in to mail server {self.host}:{self.port} as {self.user}.")
         self.server.login(self.user, self.password)
-        self.l.info(f"Log in was successful.")
+        self.l.info(f"Login to mail server was successful.")
 
     def get_health_state(self) -> Tuple[str, str]:
         """
@@ -115,10 +116,12 @@ class SMTPDelivery:
         now = datetime.datetime.now()
         if (now - self.last_health_check).total_seconds() >= self.health_check_interval:
 
+            exception_occurred = False
             self.last_health_check = datetime.datetime.now()
             self.l.info("Collecting health check infos from SMTP server.")
 
             for i in range(1, 3):
+
                 try:
 
                     if self.server is None:
@@ -133,43 +136,36 @@ class SMTPDelivery:
                     break
 
                 except smtplib.SMTPHeloError:
-                    self.health_state = "CRITICAL"
-                    self.health_logs = (
-                        "The SMTP server didn’t reply properly to the HELO greeting."
-                    )
-                    self.server = None
+                    self.health_logs = "SMTP error: The SMTP server didn't reply properly to the HELO greeting."
+                    exception_occurred = True
 
                 except smtplib.SMTPAuthenticationError:
-                    self.health_state = "CRITICAL"
-                    self.health_logs = "The SMTP server didn’t accept the username/password combination."
-                    self.server = None
+                    self.health_logs = "SMTP error: The SMTP server didn't accept the username/password combination."
+                    exception_occurred = True
 
                 except smtplib.SMTPNotSupportedError:
-                    self.health_state = "CRITICAL"
-                    self.health_logs = (
-                        "The SMTP server does not support the AUTH command."
-                    )
-                    self.server = None
+                    self.health_logs = "SMTP error: The SMTP server does not support the AUTH command."
+                    exception_occurred = True
 
                 except smtplib.SMTPException:
-                    self.health_state = "CRITICAL"
-                    self.health_logs = "No suitable authentication method was found."
-                    self.server = None
+                    self.health_logs = "SMTP error: No suitable authentication method was found."
+                    exception_occurred = True
 
                 except ConnectionError:
-                    self.health_state = "CRITICAL"
-                    self.health_logs = "The SMTP server could not be connected."
-                    self.server = None
+                    self.health_logs = "SMTP error: The SMTP server could not be connected."
+                    exception_occurred = True
 
                 except Exception as e:
-                    self.health_state = "CRITICAL"
-                    self.health_logs = "An exception occurred: " + str(e)
-                    self.server = None
+                    self.health_logs = "SMTP error: An exception occurred: " + str(e)
+                    exception_occurred = True
 
-                except:
+                if exception_occurred:
                     self.health_state = "CRITICAL"
-                    self.health_logs = "An exception occurred."
                     self.server = None
+                    self.l.error(self.health_logs)
+                    exception_occurred = False
+
+                time.sleep(10)
 
         return self.health_state, self.health_logs
 
@@ -224,25 +220,17 @@ class SMTPDelivery:
 
             except smtplib.SMTPException as e:
                 self.health_state = "CRITICAL"
-                self.health_logs = "Failed to send E-mail: " + str(e)
+                self.health_logs = "SMTP error: Failed to send E-mail: " + str(e)
                 self.l.info(f"[{sms.get_id()}] Failed to send E-mail: " + str(e))
                 self.server = None
 
             except Exception as e:
                 self.health_state = "CRITICAL"
-                self.health_logs = "Failed to send E-mail: " + str(e)
+                self.health_logs = "SMTP error: Failed to send E-mail: " + str(e)
                 self.l.warning(
                     f"[{sms.get_id()}] Unknown exception occurred during SMTP delivery: "
                     + str(e)
                 )
                 self.server = None
 
-            except:
-                self.health_state = "CRITICAL"
-                self.health_logs = "Failed to send E-mail"
-                self.l.warning(
-                    f"[{sms.get_id()}] Unknown exception occurred during SMTP delivery."
-                )
-                self.server = None
-
-
+            time.sleep(10)

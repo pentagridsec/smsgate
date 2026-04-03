@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# Copyright (c) 2022-2025 Martin Schobert, Pentagrid AG
+# Copyright (c) 2022-2026 Martin Schobert, Pentagrid AG
 #
 # All rights reserved.
 #

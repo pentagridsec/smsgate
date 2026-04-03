@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# Copyright (c) 2022 Martin Schobert, Pentagrid AG
+# Copyright (c) 2022-2026 Martin Schobert, Pentagrid AG
 #
 # All rights reserved.
 #
@@ -48,7 +48,7 @@ import bcrypt
 
 def cleanup_phone_number(phone_number: str) -> Optional[str]:
     """
-    This function cleans-up phone numbers and removes seperator characters and implements a very basic
+    This function cleans up phone numbers and removes seperator characters and implements a very basic
     phone number check.
 
     If there is the need to do further checks, this library could help:
@@ -71,7 +71,7 @@ def check_file_permissions(filename: str) -> bool:
     """
     Check if a file is readable by other users, which indicates misconfiguration.
     @param filename: The name of the file as string.
-    @return: If file is not readable by others, True is returned. Otherwise the program stop with an error message.
+    @return: If file is not readable by others, True is returned. Otherwise, the program stop with an error message.
     """
     st = os.stat(filename)
     if st.st_mode & stat.S_IROTH:
@@ -107,13 +107,13 @@ def hexdump(src: bytes, length: int = 16) -> str:
     @param length: Number of bytes to show per line.
     @return: A string containing the hex dump.
     """
-    FILTER = "".join([(len(repr(chr(x))) == 3) and chr(x) or "." for x in range(256)])
+    filter_ = "".join([(len(repr(chr(x))) == 3) and chr(x) or "." for x in range(256)])
     lines = []
     for c in range(0, len(src), length):
         chars = src[c: c + length]
         hexstr = " ".join(["%02x" % ord(x) for x in chars])
         printable = "".join(
-            ["%s" % ((ord(x) <= 127 and FILTER[ord(x)]) or ".") for x in chars]
+            ["%s" % ((ord(x) <= 127 and filter_[ord(x)]) or ".") for x in chars]
         )
         lines.append("%04x  %-*s  %s\n" % (c, length * 3, hexstr, printable))
     return "".join(lines)

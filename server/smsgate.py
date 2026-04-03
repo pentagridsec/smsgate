@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #
 # -----------------------------------------------------------------------------
-# Copyright (c) 2022 Martin Schobert, Pentagrid AG
+# Copyright (c) 2022-2026 Martin Schobert, Pentagrid AG
 #
 # All rights reserved.
 #
@@ -146,7 +146,7 @@ class SmsGate:
                     # Check if the modem config has a specific recipient
                     recipient = _sms.get_receiving_modem().get_modem_config().email_address
                     if recipient is None:
-                        self.l.debug("Failed to look up recipient's e-mail address in modem config.")
+                        self.l.debug("Failed to look up recipient's e-mail address in modem config. Reading recipient from main configuration.")
                         # Otherwise read recipient from main configuration
                         recipient = self.config.get("mail", "recipient")
 

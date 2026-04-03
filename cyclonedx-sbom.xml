@@ -47,7 +47,7 @@
     },
     {
       "bom-ref": "requirements-L1",
-      "description": "requirements line 1: attrs==25.4.0",
+      "description": "requirements line 1: attrs==26.1.0",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -56,9 +56,9 @@
         }
       ],
       "name": "attrs",
-      "purl": "pkg:pypi/attrs@25.4.0",
+      "purl": "pkg:pypi/attrs@26.1.0",
       "type": "library",
-      "version": "25.4.0"
+      "version": "26.1.0"
     },
     {
       "bom-ref": "requirements-L3",
@@ -107,7 +107,7 @@
     },
     {
       "bom-ref": "requirements-L6",
-      "description": "requirements line 6: cryptography==46.0.3",
+      "description": "requirements line 6: cryptography==46.0.6",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -116,9 +116,9 @@
         }
       ],
       "name": "cryptography",
-      "purl": "pkg:pypi/cryptography@46.0.3",
+      "purl": "pkg:pypi/cryptography@46.0.6",
       "type": "library",
-      "version": "46.0.3"
+      "version": "46.0.6"
     },
     {
       "bom-ref": "requirements-L7",
@@ -152,7 +152,7 @@
     },
     {
       "bom-ref": "requirements-L10",
-      "description": "requirements line 10: packaging==25.0",
+      "description": "requirements line 10: packaging==26.0",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -161,13 +161,13 @@
         }
       ],
       "name": "packaging",
-      "purl": "pkg:pypi/packaging@25.0",
+      "purl": "pkg:pypi/packaging@26.0",
       "type": "library",
-      "version": "25.0"
+      "version": "26.0"
     },
     {
       "bom-ref": "requirements-L14",
-      "description": "requirements line 14: pyOpenSSL==25.3.0",
+      "description": "requirements line 14: pyOpenSSL==26.0.0",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -176,13 +176,13 @@
         }
       ],
       "name": "pyOpenSSL",
-      "purl": "pkg:pypi/pyopenssl@25.3.0",
+      "purl": "pkg:pypi/pyopenssl@26.0.0",
       "type": "library",
-      "version": "25.3.0"
+      "version": "26.0.0"
     },
     {
       "bom-ref": "requirements-L11",
-      "description": "requirements line 11: pyasn1==0.6.2",
+      "description": "requirements line 11: pyasn1==0.6.3",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -191,9 +191,9 @@
         }
       ],
       "name": "pyasn1",
-      "purl": "pkg:pypi/pyasn1@0.6.2",
+      "purl": "pkg:pypi/pyasn1@0.6.3",
       "type": "library",
-      "version": "0.6.2"
+      "version": "0.6.3"
     },
     {
       "bom-ref": "requirements-L12",
@@ -212,7 +212,7 @@
     },
     {
       "bom-ref": "requirements-L13",
-      "description": "requirements line 13: pycparser==2.23",
+      "description": "requirements line 13: pycparser==3.0",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -221,9 +221,9 @@
         }
       ],
       "name": "pycparser",
-      "purl": "pkg:pypi/pycparser@2.23",
+      "purl": "pkg:pypi/pycparser@3.0",
       "type": "library",
-      "version": "2.23"
+      "version": "3.0"
     },
     {
       "bom-ref": "requirements-L15",
@@ -287,7 +287,7 @@
     },
     {
       "bom-ref": "requirements-L19",
-      "description": "requirements line 19: setuptools==80.9.0",
+      "description": "requirements line 19: setuptools==82.0.1",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -296,9 +296,9 @@
         }
       ],
       "name": "setuptools",
-      "purl": "pkg:pypi/setuptools@80.9.0",
+      "purl": "pkg:pypi/setuptools@82.0.1",
       "type": "library",
-      "version": "80.9.0"
+      "version": "82.0.1"
     },
     {
       "bom-ref": "requirements-L20",
@@ -317,7 +317,7 @@
     },
     {
       "bom-ref": "requirements-L21",
-      "description": "requirements line 21: tomli==2.4.0",
+      "description": "requirements line 21: tomli==2.4.1",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -326,9 +326,9 @@
         }
       ],
       "name": "tomli",
-      "purl": "pkg:pypi/tomli@2.4.0",
+      "purl": "pkg:pypi/tomli@2.4.1",
       "type": "library",
-      "version": "2.4.0"
+      "version": "2.4.1"
     },
     {
       "bom-ref": "requirements-L23",
@@ -436,7 +436,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2026-01-20T10:26:20.834985+00:00",
+    "timestamp": "2026-04-03T13:31:01.129195+00:00",
     "tools": {
       "components": [
         {
@@ -540,7 +540,7 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:689e19d6-6080-4c53-9146-85d0001c8ca8",
+  "serialNumber": "urn:uuid:ff169557-5ebf-4f21-a309-e2c377944b37",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",

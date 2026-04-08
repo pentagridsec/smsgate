@@ -128,8 +128,8 @@ class SMS:
             f"SMS ID            : {self.sms_id}\n"
             + f"Sender            : {self.sender}\n"
             + f"Recipient         : {self.recipient}\n"
-            + f"Message timestamp : {self.timestamp.strftime(ts_fmt)}\n"
-            + f"Created timestamp : {self.created_timestamp.strftime(ts_fmt)}\n"
+            + f"Message timestamp : {self.timestamp.astimezone().strftime(ts_fmt)}\n"
+            + f"Created timestamp : {self.created_timestamp.astimezone().strftime(ts_fmt)}\n"
             + f"Flash message     : {self.flash}\n"
         )
         if self.receiving_modem:

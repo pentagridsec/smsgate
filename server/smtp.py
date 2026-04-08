@@ -187,7 +187,15 @@ class SMTPDelivery:
                 self.l.debug(f"[{sms.get_id()}] Try sending e-mail, again.")
 
             try:
-                msg = MIMEText(sms.to_string())
+                mail_body = None
+
+                try:
+                    mail_body = sms.to_string()
+                    msg = MIMEText(mail_body)
+                except UnicodeError as e:
+                    self.l.info(f"[{sms.get_id()}] Try to send text as ASCII instead of UTF-8.")
+                    mail_body = sms.to_string().encode('ascii', 'ignore').decode('utf-8')
+                    msg = MIMEText(mail_body)
 
                 msg["Subject"] = f"SMS from {sms.get_sender()} to {sms.get_recipient()} via modem [{sms.get_receiving_modem().get_identifier()}]"
                 msg["From"] = self.user
@@ -202,15 +210,7 @@ class SMTPDelivery:
 
                 assert(self.server is not None)
 
-                try:
-                    self.server.sendmail(self.user, receiver_email, msg.as_string())
-                except UnicodeError as e:
-                    # if encoding is broken, try ascii
-                    self.l.info(
-                        f"[{sms.get_id()}] Try to send text as ASCII instead of UTF-8."
-                    )
-                    self.server.sendmail(self.user, receiver_email, repr(msg.as_string()))
-
+                self.server.sendmail(self.user, receiver_email, msg.as_string())
                 self.l.info(f"[{sms.get_id()}] Sending E-mail was successful.")
 
                 # A successful delivery clears the error state
@@ -231,6 +231,6 @@ class SMTPDelivery:
                     f"[{sms.get_id()}] Unknown exception occurred during SMTP delivery: "
                     + str(e)
                 )
-                self.server = None
+                #self.server = None
 
             time.sleep(10)

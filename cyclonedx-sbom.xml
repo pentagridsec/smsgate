@@ -32,7 +32,7 @@
     },
     {
       "bom-ref": "requirements-L22",
-      "description": "requirements line 22: Twisted==25.5.0",
+      "description": "requirements line 22: Twisted==26.4.0",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -41,9 +41,9 @@
         }
       ],
       "name": "Twisted",
-      "purl": "pkg:pypi/twisted@25.5.0",
+      "purl": "pkg:pypi/twisted@26.4.0",
       "type": "library",
-      "version": "25.5.0"
+      "version": "26.4.0"
     },
     {
       "bom-ref": "requirements-L1",
@@ -107,7 +107,7 @@
     },
     {
       "bom-ref": "requirements-L6",
-      "description": "requirements line 6: cryptography==46.0.6",
+      "description": "requirements line 6: cryptography==49.0.0",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -116,9 +116,9 @@
         }
       ],
       "name": "cryptography",
-      "purl": "pkg:pypi/cryptography@46.0.6",
+      "purl": "pkg:pypi/cryptography@49.0.0",
       "type": "library",
-      "version": "46.0.6"
+      "version": "49.0.0"
     },
     {
       "bom-ref": "requirements-L7",
@@ -137,7 +137,7 @@
     },
     {
       "bom-ref": "requirements-L8",
-      "description": "requirements line 8: idna==3.11",
+      "description": "requirements line 8: idna==3.18",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -146,13 +146,13 @@
         }
       ],
       "name": "idna",
-      "purl": "pkg:pypi/idna@3.11",
+      "purl": "pkg:pypi/idna@3.18",
       "type": "library",
-      "version": "3.11"
+      "version": "3.18"
     },
     {
       "bom-ref": "requirements-L10",
-      "description": "requirements line 10: packaging==26.0",
+      "description": "requirements line 10: packaging==26.2",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -161,13 +161,13 @@
         }
       ],
       "name": "packaging",
-      "purl": "pkg:pypi/packaging@26.0",
+      "purl": "pkg:pypi/packaging@26.2",
       "type": "library",
-      "version": "26.0"
+      "version": "26.2"
     },
     {
       "bom-ref": "requirements-L14",
-      "description": "requirements line 14: pyOpenSSL==26.0.0",
+      "description": "requirements line 14: pyOpenSSL==26.3.0",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -176,9 +176,9 @@
         }
       ],
       "name": "pyOpenSSL",
-      "purl": "pkg:pypi/pyopenssl@26.0.0",
+      "purl": "pkg:pypi/pyopenssl@26.3.0",
       "type": "library",
-      "version": "26.0.0"
+      "version": "26.3.0"
     },
     {
       "bom-ref": "requirements-L11",
@@ -272,7 +272,7 @@
     },
     {
       "bom-ref": "requirements-L18",
-      "description": "requirements line 18: service-identity==24.2.0",
+      "description": "requirements line 18: service-identity==26.1.0",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -281,9 +281,9 @@
         }
       ],
       "name": "service-identity",
-      "purl": "pkg:pypi/service-identity@24.2.0",
+      "purl": "pkg:pypi/service-identity@26.1.0",
       "type": "library",
-      "version": "24.2.0"
+      "version": "26.1.0"
     },
     {
       "bom-ref": "requirements-L19",
@@ -347,7 +347,7 @@
     },
     {
       "bom-ref": "requirements-L24",
-      "description": "requirements line 24: zope.interface==8.2",
+      "description": "requirements line 24: zope.interface==8.5",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -356,9 +356,9 @@
         }
       ],
       "name": "zope.interface",
-      "purl": "pkg:pypi/zope.interface@8.2",
+      "purl": "pkg:pypi/zope.interface@8.5",
       "type": "library",
-      "version": "8.2"
+      "version": "8.5"
     }
   ],
   "dependencies": [
@@ -436,7 +436,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2026-04-03T13:31:01.129195+00:00",
+    "timestamp": "2026-06-17T08:15:33.347234+00:00",
     "tools": {
       "components": [
         {
@@ -540,7 +540,7 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:ff169557-5ebf-4f21-a309-e2c377944b37",
+  "serialNumber": "urn:uuid:581b8840-1be8-4a27-bf62-6c8c24dd0183",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",

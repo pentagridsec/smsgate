@@ -77,7 +77,7 @@
     },
     {
       "bom-ref": "requirements-L4",
-      "description": "requirements line 4: cffi==2.0.0",
+      "description": "requirements line 4: cffi==2.1.0",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -86,9 +86,9 @@
         }
       ],
       "name": "cffi",
-      "purl": "pkg:pypi/cffi@2.0.0",
+      "purl": "pkg:pypi/cffi@2.1.0",
       "type": "library",
-      "version": "2.0.0"
+      "version": "2.1.0"
     },
     {
       "bom-ref": "requirements-L5",
@@ -182,7 +182,7 @@
     },
     {
       "bom-ref": "requirements-L11",
-      "description": "requirements line 11: pyasn1==0.6.3",
+      "description": "requirements line 11: pyasn1==0.6.4",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -191,9 +191,9 @@
         }
       ],
       "name": "pyasn1",
-      "purl": "pkg:pypi/pyasn1@0.6.3",
+      "purl": "pkg:pypi/pyasn1@0.6.4",
       "type": "library",
-      "version": "0.6.3"
+      "version": "0.6.4"
     },
     {
       "bom-ref": "requirements-L12",
@@ -287,7 +287,7 @@
     },
     {
       "bom-ref": "requirements-L19",
-      "description": "requirements line 19: setuptools==82.0.1",
+      "description": "requirements line 19: setuptools==83.0.0",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -296,9 +296,9 @@
         }
       ],
       "name": "setuptools",
-      "purl": "pkg:pypi/setuptools@82.0.1",
+      "purl": "pkg:pypi/setuptools@83.0.0",
       "type": "library",
-      "version": "82.0.1"
+      "version": "83.0.0"
     },
     {
       "bom-ref": "requirements-L20",
@@ -332,7 +332,7 @@
     },
     {
       "bom-ref": "requirements-L23",
-      "description": "requirements line 23: typing_extensions==4.15.0",
+      "description": "requirements line 23: typing_extensions==4.16.0",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -341,9 +341,9 @@
         }
       ],
       "name": "typing_extensions",
-      "purl": "pkg:pypi/typing-extensions@4.15.0",
+      "purl": "pkg:pypi/typing-extensions@4.16.0",
       "type": "library",
-      "version": "4.15.0"
+      "version": "4.16.0"
     },
     {
       "bom-ref": "requirements-L24",
@@ -436,7 +436,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2026-06-17T08:15:33.347234+00:00",
+    "timestamp": "2026-07-24T08:56:24.943298+00:00",
     "tools": {
       "components": [
         {
@@ -540,7 +540,7 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:581b8840-1be8-4a27-bf62-6c8c24dd0183",
+  "serialNumber": "urn:uuid:a9a44f79-ed11-468f-84d7-3a03e11f1113",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",

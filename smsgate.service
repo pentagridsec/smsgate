@@ -6,7 +6,7 @@ After=syslog.target
 Type=simple
 User=smsgate
 Group=smsgate
-ExecStart=/opt/smsgate/server/smsgate.sh
+ExecStart=/var/lib/smsgate/venv /opt/smsgate/server/smsgate.py
 StandardOutput=syslog
 StandardError=syslog
 

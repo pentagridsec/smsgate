@@ -98,37 +98,14 @@ Create a user that runs the software and adjust Udev rules
 
 Create a user that will later run the software:
 ::
-    sudo useradd -d /var/smsgate -m -s /usr/sbin/nologin smsgate
+    sudo useradd -d /var/lib/smsgate -m -s /usr/sbin/nologin smsgate
 
 Add user ``smsgate`` to group ``dialout``.
 ::
 
     sudo usermod -a -G dialout smsgate
 
-Install dependencies
------------------------
-
-If you prefer to install as much Python packages via your OS package
-manager as possible, run:
-
-::
-
-    sudo apt install python3-openssl python3-twisted python3-service-identity python3-venv python3-bcrypt
-    python3 -m venv venv
-    source venv/bin/activate
-    pip install python-gsmmodem-new
-
-Otherwise if you prefer your Python modules to have in a virtual
-environment, run:
-
-::
-
-    sudo apt install python3-venv rustc librust-openssl-dev
-    python3 -m venv venv
-    source venv/bin/activate
-    pip install -r requirements.txt
-   
-   
+    
 Install SMS gateway
 --------------------
 
@@ -136,26 +113,55 @@ Install SMS gateway
 ::
 
     git clone https://github.com/pentagridsec/smsgate
+    chown -R root.smsgate /opt/smsgate
 
 * Move code to installation directory:
 ::
 
     sudo mv smsgate /opt
-    cd /opt/smsgate
+    cd /opt/smsgate    
 
 * Create a directory to store runtime data
 ::
 
-    mkdir /var/smsgate
+    mkdir /var/cache/smsgate
+    chown root.smsgate /var/cache/smsgate
+    chmod 770 /var/cache/smsgate
 
 * Fix permissions
 ::
 
-    chown -R root.smsgate /opt/smsgate /var/cache/smsgate
-    chmod 640 /opt/smsgate/*.conf
-    chmod 644 /opt/smsgate/cert.pem
-    chmod 770 /var/cache/smsgate
+    chmod 640 /opt/smsgate/conf/*.conf
+    chmod 640 /opt/smsgate/conf/cert.pem
+    chmod 640 /opt/smsgate/conf/cert.key
 
+* We need a Python virtual env somewhere. Since we will run the SMS gateway under a specific user, we can also use a user venv:
+
+::
+   
+    VENV=/var/lib/smsgate/venv
+    python3 -m venv $VENV
+    source $VENV/bin/activate
+  
+* Install dependencies:
+
+If you prefer to install as much Python packages via your OS package
+manager as possible, run:
+
+::
+
+    sudo apt install python3-openssl python3-twisted python3-service-identity python3-venv python3-bcrypt
+    pip install python-gsmmodem-new
+
+Otherwise if you prefer your almost all Python modules to have in a virtual
+environment, run:
+
+::
+
+    sudo apt install python3-venv rustc librust-openssl-dev
+    pip install -r requirements.txt
+     
+  
 * Install service:
 ::
 
@@ -170,7 +176,7 @@ Install SMS gateway
     sudo systemctl start smsgate
     sudo systemctl status smsgate
    
-
+    
 Configuration
 ==============
 
@@ -212,11 +218,9 @@ If the exact port is not known, the file path may use wildcard such as ``/dev/tt
 The SMS gateway will then probe for the device. It does so by looking for the ``imei``,
 which is the International Mobile Equipment Identity and which identifies the modem.
 The ``phone_number`` defines the phone number assigned to the SIM card. It is
-used as identifier, for example for incoming SMS, but also to identify modems,
-for example, when a user sends a USSD code or an SMS via the XMLRPC API. Then
-it is possisble and for USSD codes necessary to specify a sender. The
-``phone_number`` enables the gateway to find the right modem for sending the
-SMS or the USSD code.
+used as identifier, for example for incoming SMS. When a user sends a USSD
+code or an SMS via the XMLRPC API, the ``phone_number`` enables the gateway
+to find the right modem for sending the SMS or the USSD code.
 
 The ``provider`` is an
 information about the operator, the SIM card is associated with. It is not
@@ -224,7 +228,8 @@ necessarily the same network operator the modem connects to. The information
 is just for information and not technically used but it may be helpful to
 find SIM cards in the config file. The ``pin`` setting is the SIM card PIN
 that unlocks secret keys on the SIM card to allow an authentication towards
-the GSM network. If there is no PIN, leave it blank.
+the mobile network. If there is no PIN set on the SIM card, leave this field
+blank. The modem manager will check if a PIN is required for unlocking.
 
 The ``ussd_account_balance`` is an USSD code to retrieve the account balance
 associated with the SIM card. This is required for pre-paid accounts, which
@@ -241,7 +246,8 @@ depending on the underrun of ``account_balance_warning`` or
 setting, the balance is not checked. If ``account_balance_warning``
 and ``account_balance_critical`` are set to
 zero, neither a warning nor a critical is triggered, which effectively
-disables the function.
+disables the function. Currently, there is no support for other account balance
+checks than with USSD codes.
 
 The ``prefixes`` configuration value specifies which phone networks a modem
 respectively a SIM card is responsible for. The setting's value is a list of
@@ -315,7 +321,8 @@ private key and certificate by running:
     ./tools/make_cert.sh
 
 This script creates a certificate with the CN set to ``localhost``. You may want to adjust this. Otherwise
-clients trusting the self-signed certificate may fail at the hostname verification.
+clients even instructed to trust the self-signed certificate may fail at the hostname verification, when the
+client connects via a non-localhost network.
     
 If you do not use a self-signed certificate, but a certificate deployed to your server, the path
 can be entered there, for example:
@@ -324,13 +331,6 @@ can be entered there, for example:
 
     certificate = /etc/ssl/certs/myhostname.crt
     key = /etc/ssl/private/myhostname.key
-
-You need to ensure the server can read the private key. If you use a Linux, your
-certificates/keys may belong to the group ``ssl-cert``
-
-::
-
-    sudo usermod -a -G ssl-cert smsgate
 
 In the next configuration section, the API access is configured.
 

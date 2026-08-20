@@ -77,7 +77,7 @@
     },
     {
       "bom-ref": "requirements-L4",
-      "description": "requirements line 4: cffi==2.1.0",
+      "description": "requirements line 4: cffi==2.1.1",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -86,9 +86,9 @@
         }
       ],
       "name": "cffi",
-      "purl": "pkg:pypi/cffi@2.1.0",
+      "purl": "pkg:pypi/cffi@2.1.1",
       "type": "library",
-      "version": "2.1.0"
+      "version": "2.1.1"
     },
     {
       "bom-ref": "requirements-L5",
@@ -107,7 +107,7 @@
     },
     {
       "bom-ref": "requirements-L6",
-      "description": "requirements line 6: cryptography==49.0.0",
+      "description": "requirements line 6: cryptography==50.0.0",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -116,9 +116,9 @@
         }
       ],
       "name": "cryptography",
-      "purl": "pkg:pypi/cryptography@49.0.0",
+      "purl": "pkg:pypi/cryptography@50.0.0",
       "type": "library",
-      "version": "49.0.0"
+      "version": "50.0.0"
     },
     {
       "bom-ref": "requirements-L7",
@@ -137,7 +137,7 @@
     },
     {
       "bom-ref": "requirements-L8",
-      "description": "requirements line 8: idna==3.18",
+      "description": "requirements line 8: idna==3.19",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -146,13 +146,13 @@
         }
       ],
       "name": "idna",
-      "purl": "pkg:pypi/idna@3.18",
+      "purl": "pkg:pypi/idna@3.19",
       "type": "library",
-      "version": "3.18"
+      "version": "3.19"
     },
     {
       "bom-ref": "requirements-L10",
-      "description": "requirements line 10: packaging==26.2",
+      "description": "requirements line 10: packaging==26.3",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -161,13 +161,13 @@
         }
       ],
       "name": "packaging",
-      "purl": "pkg:pypi/packaging@26.2",
+      "purl": "pkg:pypi/packaging@26.3",
       "type": "library",
-      "version": "26.2"
+      "version": "26.3"
     },
     {
       "bom-ref": "requirements-L14",
-      "description": "requirements line 14: pyOpenSSL==26.3.0",
+      "description": "requirements line 14: pyOpenSSL==26.4.0",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -176,9 +176,9 @@
         }
       ],
       "name": "pyOpenSSL",
-      "purl": "pkg:pypi/pyopenssl@26.3.0",
+      "purl": "pkg:pypi/pyopenssl@26.4.0",
       "type": "library",
-      "version": "26.3.0"
+      "version": "26.4.0"
     },
     {
       "bom-ref": "requirements-L11",
@@ -287,7 +287,7 @@
     },
     {
       "bom-ref": "requirements-L19",
-      "description": "requirements line 19: setuptools==83.0.0",
+      "description": "requirements line 19: setuptools==84.0.0",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -296,9 +296,9 @@
         }
       ],
       "name": "setuptools",
-      "purl": "pkg:pypi/setuptools@83.0.0",
+      "purl": "pkg:pypi/setuptools@84.0.0",
       "type": "library",
-      "version": "83.0.0"
+      "version": "84.0.0"
     },
     {
       "bom-ref": "requirements-L20",
@@ -436,7 +436,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2026-07-24T08:56:24.943298+00:00",
+    "timestamp": "2026-08-20T09:38:57.677056+00:00",
     "tools": {
       "components": [
         {
@@ -540,7 +540,7 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:a9a44f79-ed11-468f-84d7-3a03e11f1113",
+  "serialNumber": "urn:uuid:e8846a8a-eb56-4eb4-8e10-96d9ec5d835c",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",

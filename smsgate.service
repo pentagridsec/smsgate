@@ -10,5 +10,22 @@ ExecStart=/var/lib/smsgate/venv/bin/python /opt/smsgate/server/smsgate.py --serv
 StandardOutput=syslog
 StandardError=syslog
 
+# Hardening
+ProtectSystem=strict
+ProtectHome=yes
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RemoveIPC=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+RestrictRealtime=yes
+RestrictNamespaces=yes
+ReadOnlyPaths=/var/lib/smsgate/
+
 [Install]
 WantedBy=multi-user.target

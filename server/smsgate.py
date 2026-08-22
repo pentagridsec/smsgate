@@ -387,12 +387,12 @@ def main() -> None:
     parser.add_argument('--server-config', metavar='SRVCONFIG', default='smsgate.conf', help='Config file for the SMS gateway.')
     args = parser.parse_args()
 
-    if args.help:
+    if 'help' in args:
         parser.print_help()
         sys.exit(1)
     
     # read config
-    server_config = SmsGate.read_config(parser.server_config)
+    server_config = SmsGate.read_config(args.server_config)
 
     # set umask
     os.umask(0o007)
@@ -415,8 +415,8 @@ def main() -> None:
         setup_seccomp()
 
     # check config file permissions
-    helper.check_file_permissions(parser.simcard_config)
-    helper.check_file_permissions(parser.server_config)
+    helper.check_file_permissions(args.simcard_config)
+    helper.check_file_permissions(args.server_config)
 
     # launch service
     sms_gate = SmsGate(server_config)

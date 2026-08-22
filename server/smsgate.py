@@ -62,13 +62,15 @@ class SmsGate:
     Class representing the SMS Gateway
     """
 
-    def __init__(self, config: configparser.ConfigParser) -> None:
+    def __init__(self, config: configparser.ConfigParser,
+                 sim_config: configparser.ConfigParser) -> None:
         """
         Create a new SMS Gateway object.
         @param config: A ConfigParser object.
         """
 
         self.config = config
+        self.sim_config = sim_config
         self.smtp_delivery_queue = queue.Queue()
         self.event_available = threading.Event()
 
@@ -80,7 +82,7 @@ class SmsGate:
         self._init_rpcserver()
 
     @staticmethod
-    def read_sim_config(conf_file: str = "conf/sim-cards.conf") -> configparser.ConfigParser:
+    def read_sim_config(conf_file: str = "sim-cards.conf") -> configparser.ConfigParser:
         """
         Read SIM card configuration from an INI file.
         @param conf_file: The name of the INI file.
@@ -91,7 +93,7 @@ class SmsGate:
         return config
 
     @staticmethod
-    def read_config(conf_file: str = "conf/smsgate.conf") -> configparser.ConfigParser:
+    def read_server_config(conf_file: str = "smsgate.conf") -> configparser.ConfigParser:
         """
         Read SMS Gateway configuration from an INI file.
         @param conf_file: The name of the INI file.
@@ -191,14 +193,12 @@ class SmsGate:
         self.pool = modempool.ModemPool(health_check_interval)
         self.pool.set_event_thread(self.event_available)
 
-        sim_config = SmsGate.read_sim_config()
-
         self.l.info("Initializing modem pool.")
 
-        for identifier in sim_config.sections():
+        for identifier in self.sim_config.sections():
 
             # read config
-            modem_conf = modemconfig.read_modem_config(identifier, sim_config,
+            modem_conf = modemconfig.read_modem_config(identifier, self.sim_config,
                                                        self.config.get("modempool", "sms_self_test_interval",
                                                                        fallback=""))
 
@@ -391,8 +391,9 @@ def main() -> None:
         parser.print_help()
         sys.exit(1)
     
-    # read config
-    server_config = SmsGate.read_config(args.server_config)
+    # read config files
+    server_config = SmsGate.read_server_config(args.server_config)
+    sim_config = SmsGate.read_sim_config(args.simcard_config)
 
     # set umask
     os.umask(0o007)
@@ -419,7 +420,7 @@ def main() -> None:
     helper.check_file_permissions(args.server_config)
 
     # launch service
-    sms_gate = SmsGate(server_config)
+    sms_gate = SmsGate(server_config, sim_config)
     sms_gate.run()
 
 

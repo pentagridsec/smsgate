@@ -47,6 +47,7 @@ import sys
 import threading
 import time
 import traceback
+import argparse
 
 import helper
 import modem
@@ -380,9 +381,18 @@ def main() -> None:
     """
     The main function that launches the SMS Gateway server. It will not return.
     """
+    parser = argparse.ArgumentParser(description='SMS Gateway server program')
 
+    parser.add_argument('--simcard-config', metavar='SIMCONFIG', default='sim-cards.conf', help='Config file for SIM cards.')
+    parser.add_argument('--server-config', metavar='SRVCONFIG', default='smsgate.conf', help='Config file for the SMS gateway.')
+    args = parser.parse_args()
+
+    if args.help:
+        parser.print_help()
+        sys.exit(1)
+    
     # read config
-    server_config = SmsGate.read_config()
+    server_config = SmsGate.read_config(parser.server_config)
 
     # set umask
     os.umask(0o007)
@@ -405,8 +415,8 @@ def main() -> None:
         setup_seccomp()
 
     # check config file permissions
-    helper.check_file_permissions("conf/sim-cards.conf")
-    helper.check_file_permissions("conf/smsgate.conf")
+    helper.check_file_permissions(parser.simcard_config)
+    helper.check_file_permissions(parser.server_config)
 
     # launch service
     sms_gate = SmsGate(server_config)

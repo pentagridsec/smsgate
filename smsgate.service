@@ -6,7 +6,7 @@ After=syslog.target
 Type=simple
 User=smsgate
 Group=smsgate
-ExecStart=/var/lib/smsgate/venv /opt/smsgate/server/smsgate.py
+ExecStart=/var/lib/smsgate/venv/bin/python /opt/smsgate/server/smsgate.py --server-config /opt/smsgate/conf/smsgate.conf --simcard-config /opt/smsgate/conf/sim-cards.conf
 StandardOutput=syslog
 StandardError=syslog
 

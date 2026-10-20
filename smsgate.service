@@ -6,9 +6,26 @@ After=syslog.target
 Type=simple
 User=smsgate
 Group=smsgate
-ExecStart=/var/lib/smsgate/venv /opt/smsgate/server/smsgate.py
+ExecStart=/var/lib/smsgate/venv/bin/python /opt/smsgate/server/smsgate.py --server-config /opt/smsgate/conf/smsgate.conf --simcard-config /opt/smsgate/conf/sim-cards.conf
 StandardOutput=syslog
 StandardError=syslog
+
+# Hardening
+ProtectSystem=strict
+ProtectHome=yes
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=no
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RemoveIPC=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+RestrictRealtime=yes
+RestrictNamespaces=yes
+ReadOnlyPaths=/var/lib/smsgate/
 
 [Install]
 WantedBy=multi-user.target

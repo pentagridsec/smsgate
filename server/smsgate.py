@@ -47,6 +47,7 @@ import sys
 import threading
 import time
 import traceback
+import argparse
 
 import helper
 import modem
@@ -61,13 +62,15 @@ class SmsGate:
     Class representing the SMS Gateway
     """
 
-    def __init__(self, config: configparser.ConfigParser) -> None:
+    def __init__(self, config: configparser.ConfigParser,
+                 sim_config: configparser.ConfigParser) -> None:
         """
         Create a new SMS Gateway object.
         @param config: A ConfigParser object.
         """
 
         self.config = config
+        self.sim_config = sim_config
         self.smtp_delivery_queue = queue.Queue()
         self.event_available = threading.Event()
 
@@ -79,7 +82,7 @@ class SmsGate:
         self._init_rpcserver()
 
     @staticmethod
-    def read_sim_config(conf_file: str = "conf/sim-cards.conf") -> configparser.ConfigParser:
+    def read_sim_config(conf_file: str = "sim-cards.conf") -> configparser.ConfigParser:
         """
         Read SIM card configuration from an INI file.
         @param conf_file: The name of the INI file.
@@ -90,7 +93,7 @@ class SmsGate:
         return config
 
     @staticmethod
-    def read_config(conf_file: str = "conf/smsgate.conf") -> configparser.ConfigParser:
+    def read_server_config(conf_file: str = "smsgate.conf") -> configparser.ConfigParser:
         """
         Read SMS Gateway configuration from an INI file.
         @param conf_file: The name of the INI file.
@@ -190,14 +193,12 @@ class SmsGate:
         self.pool = modempool.ModemPool(health_check_interval)
         self.pool.set_event_thread(self.event_available)
 
-        sim_config = SmsGate.read_sim_config()
-
         self.l.info("Initializing modem pool.")
 
-        for identifier in sim_config.sections():
+        for identifier in self.sim_config.sections():
 
             # read config
-            modem_conf = modemconfig.read_modem_config(identifier, sim_config,
+            modem_conf = modemconfig.read_modem_config(identifier, self.sim_config,
                                                        self.config.get("modempool", "sms_self_test_interval",
                                                                        fallback=""))
 
@@ -380,9 +381,19 @@ def main() -> None:
     """
     The main function that launches the SMS Gateway server. It will not return.
     """
+    parser = argparse.ArgumentParser(description='SMS Gateway server program')
 
-    # read config
-    server_config = SmsGate.read_config()
+    parser.add_argument('--simcard-config', metavar='SIMCONFIG', default='sim-cards.conf', help='Config file for SIM cards.')
+    parser.add_argument('--server-config', metavar='SRVCONFIG', default='smsgate.conf', help='Config file for the SMS gateway.')
+    args = parser.parse_args()
+
+    if 'help' in args:
+        parser.print_help()
+        sys.exit(1)
+    
+    # read config files
+    server_config = SmsGate.read_server_config(args.server_config)
+    sim_config = SmsGate.read_sim_config(args.simcard_config)
 
     # set umask
     os.umask(0o007)
@@ -405,11 +416,11 @@ def main() -> None:
         setup_seccomp()
 
     # check config file permissions
-    helper.check_file_permissions("conf/sim-cards.conf")
-    helper.check_file_permissions("conf/smsgate.conf")
+    helper.check_file_permissions(args.simcard_config)
+    helper.check_file_permissions(args.server_config)
 
     # launch service
-    sms_gate = SmsGate(server_config)
+    sms_gate = SmsGate(server_config, sim_config)
     sms_gate.run()
 
 

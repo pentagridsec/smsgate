@@ -107,7 +107,7 @@
     },
     {
       "bom-ref": "requirements-L6",
-      "description": "requirements line 6: cryptography==50.0.0",
+      "description": "requirements line 6: cryptography==50.0.2",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -116,9 +116,9 @@
         }
       ],
       "name": "cryptography",
-      "purl": "pkg:pypi/cryptography@50.0.0",
+      "purl": "pkg:pypi/cryptography@50.0.2",
       "type": "library",
-      "version": "50.0.0"
+      "version": "50.0.2"
     },
     {
       "bom-ref": "requirements-L7",
@@ -137,7 +137,7 @@
     },
     {
       "bom-ref": "requirements-L8",
-      "description": "requirements line 8: idna==3.19",
+      "description": "requirements line 8: idna==3.20",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -146,9 +146,9 @@
         }
       ],
       "name": "idna",
-      "purl": "pkg:pypi/idna@3.19",
+      "purl": "pkg:pypi/idna@3.20",
       "type": "library",
-      "version": "3.19"
+      "version": "3.20"
     },
     {
       "bom-ref": "requirements-L10",
@@ -212,7 +212,7 @@
     },
     {
       "bom-ref": "requirements-L13",
-      "description": "requirements line 13: pycparser==3.0",
+      "description": "requirements line 13: pycparser==3.11",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -221,9 +221,9 @@
         }
       ],
       "name": "pycparser",
-      "purl": "pkg:pypi/pycparser@3.0",
+      "purl": "pkg:pypi/pycparser@3.11",
       "type": "library",
-      "version": "3.0"
+      "version": "3.11"
     },
     {
       "bom-ref": "requirements-L15",
@@ -287,7 +287,7 @@
     },
     {
       "bom-ref": "requirements-L19",
-      "description": "requirements line 19: setuptools==84.0.0",
+      "description": "requirements line 19: setuptools==84.2.1",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -296,9 +296,9 @@
         }
       ],
       "name": "setuptools",
-      "purl": "pkg:pypi/setuptools@84.0.0",
+      "purl": "pkg:pypi/setuptools@84.2.1",
       "type": "library",
-      "version": "84.0.0"
+      "version": "84.2.1"
     },
     {
       "bom-ref": "requirements-L20",
@@ -317,7 +317,7 @@
     },
     {
       "bom-ref": "requirements-L21",
-      "description": "requirements line 21: tomli==2.4.1",
+      "description": "requirements line 21: tomli==2.5.0",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -326,9 +326,9 @@
         }
       ],
       "name": "tomli",
-      "purl": "pkg:pypi/tomli@2.4.1",
+      "purl": "pkg:pypi/tomli@2.5.0",
       "type": "library",
-      "version": "2.4.1"
+      "version": "2.5.0"
     },
     {
       "bom-ref": "requirements-L23",
@@ -347,7 +347,7 @@
     },
     {
       "bom-ref": "requirements-L24",
-      "description": "requirements line 24: zope.interface==8.5",
+      "description": "requirements line 24: zope.interface==8.7",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -356,9 +356,9 @@
         }
       ],
       "name": "zope.interface",
-      "purl": "pkg:pypi/zope.interface@8.5",
+      "purl": "pkg:pypi/zope.interface@8.7",
       "type": "library",
-      "version": "8.5"
+      "version": "8.7"
     }
   ],
   "dependencies": [
@@ -436,7 +436,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2026-08-20T09:38:57.677056+00:00",
+    "timestamp": "2026-10-21T08:29:04.130375+00:00",
     "tools": {
       "components": [
         {
@@ -540,7 +540,7 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:e8846a8a-eb56-4eb4-8e10-96d9ec5d835c",
+  "serialNumber": "urn:uuid:aeae516d-9404-400f-b726-06da266a3b38",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",

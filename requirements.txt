@@ -8,9 +8,9 @@ hyperlink==21.0.0
 idna==3.20
 Incremental==24.11.0
 packaging==26.3
-pyasn1==0.6.4
+pyasn1==0.6.5
 pyasn1_modules==0.4.2
-pycparser==3.11
+pycparser==3.12
 pyOpenSSL==26.4.0
 pyseccomp==0.1.2
 pyserial==3.5

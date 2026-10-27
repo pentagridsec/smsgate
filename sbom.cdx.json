@@ -182,7 +182,7 @@
     },
     {
       "bom-ref": "requirements-L11",
-      "description": "requirements line 11: pyasn1==0.6.4",
+      "description": "requirements line 11: pyasn1==0.6.5",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -191,9 +191,9 @@
         }
       ],
       "name": "pyasn1",
-      "purl": "pkg:pypi/pyasn1@0.6.4",
+      "purl": "pkg:pypi/pyasn1@0.6.5",
       "type": "library",
-      "version": "0.6.4"
+      "version": "0.6.5"
     },
     {
       "bom-ref": "requirements-L12",
@@ -212,7 +212,7 @@
     },
     {
       "bom-ref": "requirements-L13",
-      "description": "requirements line 13: pycparser==3.11",
+      "description": "requirements line 13: pycparser==3.12",
       "externalReferences": [
         {
           "comment": "implicit dist url",
@@ -221,9 +221,9 @@
         }
       ],
       "name": "pycparser",
-      "purl": "pkg:pypi/pycparser@3.11",
+      "purl": "pkg:pypi/pycparser@3.12",
       "type": "library",
-      "version": "3.11"
+      "version": "3.12"
     },
     {
       "bom-ref": "requirements-L15",
@@ -436,7 +436,7 @@
     }
   ],
   "metadata": {
-    "timestamp": "2026-10-21T08:29:04.130375+00:00",
+    "timestamp": "2026-10-27T09:44:47.657710+00:00",
     "tools": {
       "components": [
         {
@@ -540,7 +540,7 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:aeae516d-9404-400f-b726-06da266a3b38",
+  "serialNumber": "urn:uuid:86f5a633-7d47-4d14-a12f-8b1e21fb109c",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
